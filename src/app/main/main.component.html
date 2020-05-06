@@ -31,7 +31,7 @@
       <div class="collapse" id="contentId">
         <div class="card" style="margin-top: 250px;">
           <div class="card-header" style="color:white;min-width: 200px;background-color:rgba(0,105,217,0.63);">
-            Teacher Name
+            {{this.studentName}}
           </div>
           <div class="card-body">
             <div>
@@ -41,7 +41,7 @@
               <button class="btn btn-link" (click)="onShowResetForm()">Recover Password</button>
             </div>
             <div>
-              <button class="btn btn-link">Logout</button>
+              <button class="btn btn-link" (click)="onLogout()">Logout</button>
             </div>
           </div>
         </div>
@@ -61,9 +61,8 @@
                 </button>
       </span>
     </div>
-    <div id="content_mobile hider" class="app-header__content">
+    <div id="content_mobile" class="app-header__content  hider">
       <div class="app-header-left">
-
       </div>
       <div class="app-header-right">
         <div class="header-btn-lg pr-0">

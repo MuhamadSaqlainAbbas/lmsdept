@@ -65,6 +65,7 @@ export class TimeTableComponent implements OnInit {
 
     this.timetableService.getStudentTimeTable(2016, 1, 1, 1, 1).subscribe(
       response => {
+        console.log(response);
         // temp Response For testing sort
         const tempResponse: TimeTableData[] = [
           {
