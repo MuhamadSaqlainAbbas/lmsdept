@@ -2,4 +2,10 @@
   .card {
     font-size: .7rem;
   }
+
+}
+@media (max-width: 1111px) {
+  .btn-primary{
+    margin-top: 10px;
+  }
 }

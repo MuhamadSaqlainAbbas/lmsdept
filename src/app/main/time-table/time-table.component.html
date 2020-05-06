@@ -11,61 +11,60 @@
         <th>12:30-2:00</th>
         <th>4:00-5:30</th>
         <th>5:30-7:00</th>
-        <th>0:30-0:00</th>
+        <th>7:00-8:30</th>
       </tr>
       </thead>
       <tbody>
       <tr>
         <th scope="row " class="fix-size">Monday</th>
-        <td *ngFor="let day of timetableData.timetable[0]">
-          <div class="container-fluid text-center pb-4 pt-2" *ngIf="day.isLecture">
-            *{{day.teacher}} <br>
-            *{{day.roomNo}} <br>
-            *{{day.lecture}}
+        <td *ngFor="let d of finalData.timetable[0]">
+          <div class="container-fluid text-center pb-2 pt-2" *ngIf="d.isLec">
+            *){{d.FM_NAME}} <br>
+            *){{d.R_NAME}}<br>
+            *){{d.SUB_NM}}
           </div>
         </td>
-
       </tr>
       <tr>
         <th scope="row " class="fix-size">Tuesday</th>
-        <td *ngFor="let day of timetableData.timetable[1]">
-          <div class="container-fluid text-center pb-4 pt-2" *ngIf="day.isLecture">
-            *{{day.teacher}} <br>
-            *{{day.roomNo}} <br>
-            *{{day.lecture}}
+        <td *ngFor="let d of finalData.timetable[1]">
+          <div class="container-fluid text-center pb-2 pt-2" *ngIf="d.isLec">
+            *){{d.FM_NAME}} <br>
+            *){{d.R_NAME}}<br>
+            *){{d.SUB_NM}}
           </div>
         </td>
 
       </tr>
       <tr>
         <th scope="row " class="fix-size">Wednesday</th>
-        <td *ngFor="let day of timetableData.timetable[2]">
-          <div class="container-fluid text-center pb-4 pt-2" *ngIf="day.isLecture">
-            *{{day.teacher}} <br>
-            *{{day.roomNo}} <br>
-            *{{day.lecture}}
+        <td *ngFor="let d of finalData.timetable[2]">
+          <div class="container-fluid text-center pb-2 pt-2" *ngIf="d.isLec">
+            *){{d.FM_NAME}} <br>
+            *){{d.R_NAME}}<br>
+            *){{d.SUB_NM}}
           </div>
         </td>
 
       </tr>
       <tr>
         <th scope="row " class="fix-size">Thursday</th>
-        <td *ngFor="let day of timetableData.timetable[3]">
-          <div class="container-fluid text-center pb-4 pt-2" *ngIf="day.isLecture">
-            *{{day.teacher}} <br>
-            *{{day.roomNo}} <br>
-            *{{day.lecture}}
+        <td *ngFor="let d of finalData.timetable[3]">
+          <div class="container-fluid text-center pb-2 pt-2" *ngIf="d.isLec">
+            *){{d.FM_NAME}} <br>
+            *){{d.R_NAME}}<br>
+            *){{d.SUB_NM}}
           </div>
         </td>
 
       </tr>
       <tr>
         <th scope="row " class="fix-size">Friday</th>
-        <td *ngFor="let day of timetableData.timetable[4]">
-          <div class="container-fluid text-center pb-4 pt-2" *ngIf="day.isLecture">
-            *{{day.teacher}} <br>
-            *{{day.roomNo}} <br>
-            *{{day.lecture}}
+        <td *ngFor="let d of finalData.timetable[4]">
+          <div class="container-fluid text-center pb-2 pt-2" *ngIf="d.isLec">
+            *){{d.FM_NAME}} <br>
+            *){{d.R_NAME}}<br>
+            *){{d.SUB_NM}}
           </div>
         </td>
       </tr>

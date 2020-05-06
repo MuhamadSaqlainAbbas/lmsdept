@@ -15,7 +15,8 @@
             *ngFor="let courseMaterial of this.courseMaterial;">
             <td>{{courseMaterial.courseMaterilTitle}}</td>
             <td class="text-center">
-              <button class="download" (click)="DownLoadFiles()"><i class="fa fa-download"></i></button>
+<!--              Added by Yousaf to get file path on relative download button click-->
+              <button class="download" #downloadFile value="{{courseMaterial.fileName}}" (click)="DownLoadFiles(downloadFile)"><i class="fa fa-download"></i></button>
             </td>
           </tr>
           </tbody>

@@ -6,6 +6,15 @@ import {CourseAttendanceModal} from './courseAttendance.modal';
 import {Store} from '@ngrx/store';
 import {ProgressReportModal} from './progress-report-modal';
 import {AnnouncementModal} from './announcement.modal';
+import {HomeAnnouncementService} from './home-announcement.service';
+
+
+// tslint:disable-next-line:class-name
+interface announcementResponse {
+  ANN_TITLE: string;
+  ANN_DESC: string;
+  ANN_DATE: string;
+}
 
 function chartInitialization() {
   monkeyPatchChartJsTooltip();
@@ -22,10 +31,12 @@ export class HomeComponent implements OnInit {
 
   public semesterAttendance: CourseAttendanceModal[];
   private progressReport: ProgressReportModal;
-  public announcements: AnnouncementModal[];
+  public announcements: Array<AnnouncementModal>;
 
-  constructor(private store: Store<fromApp.AppState>) {
+  constructor(private store: Store<fromApp.AppState>,
+              private homeAnnouncementService: HomeAnnouncementService) {
     // chartInitialization();
+    this.announcements = new Array<AnnouncementModal>();
   }
 
   public pieChartOptions: ChartOptions = {
@@ -69,9 +80,34 @@ export class HomeComponent implements OnInit {
     this.store.select('fromHome').subscribe(
       state => {
         this.semesterAttendance = state.semesterAttendance;
-        this.announcements = state.announcements;
+        // this.announcements = state.announcements;
         this.lineChartData = [{data: [...state.progressReport.progressData], label: 'Performance'}];
         this.pieChartData = [this.semesterAttendance[0].presents, this.semesterAttendance[0].absents];
+      }
+    );
+    this.homeAnnouncementService.getSemesterAnnouncement(2016, 1, 1, 1, 1).subscribe(
+      response => {
+        try {
+          // @ts-ignore
+          for (const res: announcementResponse of response) {
+            this.announcements.push(new AnnouncementModal(res.ANN_TITLE, res.ANN_DESC, res.ANN_DATE));
+          }
+        } catch (e) {
+          console.log(e);
+        }
+      }
+    );
+    this.homeAnnouncementService.getDepartmentAnnouncement(1, 1, 1).subscribe(
+      response => {
+        try {
+          // @ts-ignore
+          for (const res: announcementResponse of response) {
+            this.announcements.push(new AnnouncementModal(res.ANN_TITLE, res.ANN_DESC, res.ANN_DATE));
+          }
+        } catch (e) {
+          console.log(e);
+        }
+        console.log(this.announcements);
       }
     );
   }

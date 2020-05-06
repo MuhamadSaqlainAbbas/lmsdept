@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import * as fromApp from '../../../store/app.reducers';
 import {Store} from '@ngrx/store';
 import {CourseMaterialModal} from './course-material.modal';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import { saveAs } from 'file-saver';
+import {saveAs} from 'file-saver';
 import {map} from 'rxjs/operators';
 
 @Component({
@@ -16,18 +16,23 @@ export class CourseMaterialComponent implements OnInit {
   public courseMaterial: CourseMaterialModal[] = [];
   private filePath: string;
   private fileName: string;
-   constructor(private store: Store<fromApp.AppState>,
-               private http: HttpClient) {
-     this.fileName = 'login page.txt.txt';
-     this.filePath =  `C:\\Users\\Saqlain abbas\\source\\repos\\LMS-API\\LMS-API\\Files\\assignments\\dcb5-c821\\login page.txt`;
-   }
+
+  constructor(private store: Store<fromApp.AppState>,
+              private http: HttpClient) {
+    this.fileName = 'login page.txt.txt';
+    this.filePath = `C:\\Users\\Saqlain abbas\\source\\repos\\LMS-API\\LMS-API\\Files\\assignments\\dcb5-c821\\login page.txt`;
+  }
 
   ngOnInit() {
     this.http.get<any>('http://localhost:12345/api/CourseMaterials/CourseMaterialsBySubCode?',
-      { params: { dep_id: JSON.parse(localStorage.getItem('currentUser')).D_ID,
-                          maj_id: JSON.parse(localStorage.getItem('currentUser')).MAJ_ID,
-                          c_code: JSON.parse(localStorage.getItem('currentUser')).C_CODE,
-                          sub_code: JSON.parse(localStorage.getItem('selectedCourse')).courseCode }})
+      {
+        params: {
+          dep_id: JSON.parse(localStorage.getItem('currentUser')).D_ID,
+          maj_id: JSON.parse(localStorage.getItem('currentUser')).MAJ_ID,
+          c_code: JSON.parse(localStorage.getItem('currentUser')).C_CODE,
+          sub_code: JSON.parse(localStorage.getItem('selectedCourse')).courseCode
+        }
+      })
       .pipe().subscribe(
       s => {
         for (const index in s) {
@@ -42,9 +47,13 @@ export class CourseMaterialComponent implements OnInit {
       }
     );
   }
-  DownLoadFiles() {
+
+  DownLoadFiles(downloadFile: HTMLButtonElement) {
+
+    // Added By:Yousaf to get relative file path
+    const filePath = downloadFile.value;
     // file type extension
-    const checkFileType =  this.fileName.split('.').pop();
+    const checkFileType = this.fileName.split('.').pop();
     let fileType;
     if (checkFileType === '.txt') {
       fileType = 'text/plain';
@@ -86,10 +95,13 @@ export class CourseMaterialComponent implements OnInit {
         }
       );
   }
+
   DownloadFile(filePath: string): Observable<any> {
-    return this.http.post('http://localhost:12345/api/Download/DownloadFile?filePath=' + filePath , '',
-      { responseType: 'blob',
-        observe: 'response'})
+    return this.http.post('http://localhost:12345/api/Download/DownloadFile?filePath=' + filePath, '',
+      {
+        responseType: 'blob',
+        observe: 'response'
+      })
       .pipe(
         map((res: any) => {
           return new Blob([res.body]);

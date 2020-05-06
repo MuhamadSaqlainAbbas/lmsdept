@@ -6,7 +6,7 @@ export interface State {
   timetable: TimeTableModal;
 }
 const initialState: State = {
-  timetable: new TimeTableModal([
+  /*timetable: new TimeTableModal([
     [
       new TimeTableDay(true, 'Mr.Atif Ishaq', 'Room-4', 'Compiler Cons'),
       new TimeTableDay(false, 'Mr.Atif Ishaq', 'Room-4', 'Compiler Cons'),
@@ -52,7 +52,8 @@ const initialState: State = {
       new TimeTableDay(false, 'Mr.Atif Ishaq', 'Room-4', 'Compiler Cons'),
       new TimeTableDay(true, 'Mr.Atif Ishaq', 'Room-4', 'Compiler Cons')
     ]
-  ])
+  ])*/
+  timetable: null
 };
 
 export function TimeTableReducer(
