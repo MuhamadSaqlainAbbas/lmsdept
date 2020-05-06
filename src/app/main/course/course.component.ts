@@ -1,5 +1,7 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import {Component, OnChanges, OnDestroy, OnInit} from '@angular/core';
+import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
+import * as fromApp from './../../store/app.reducers';
+import {Store} from '@ngrx/store';
 
 declare var $: any;
 
@@ -8,10 +10,22 @@ declare var $: any;
   templateUrl: './course.component.html',
   styleUrls: ['./course.component.css']
 })
-export class CourseComponent implements OnInit {
-
+export class CourseComponent implements OnInit, OnDestroy {
+  mySubscription: any;
   constructor(private router: Router,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private store: Store<fromApp.AppState>) {
+    // tslint:disable-next-line:only-arrow-functions
+    this.router.routeReuseStrategy.shouldReuseRoute = function() {
+      return false;
+    };
+
+    this.mySubscription = this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        // Trick the Router into believing it's last link wasn't previously loaded
+        this.router.navigated = false;
+      }
+    });
   }
 
   ngOnInit() {
@@ -46,5 +60,10 @@ export class CourseComponent implements OnInit {
 
   OnAskQuestionClicked() {
     this.router.navigate(['askQuestion'], {relativeTo: this.route});
+  }
+  ngOnDestroy() {
+    if (this.mySubscription) {
+      this.mySubscription.unsubscribe();
+    }
   }
 }

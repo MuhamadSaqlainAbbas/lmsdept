@@ -15,7 +15,7 @@
             *ngFor="let courseMaterial of this.courseMaterial;">
             <td>{{courseMaterial.courseMaterilTitle}}</td>
             <td class="text-center">
-              <button class="download"><i class="fa fa-download"></i></button>
+              <button class="download" (click)="DownLoadFiles()"><i class="fa fa-download"></i></button>
             </td>
           </tr>
           </tbody>
@@ -24,4 +24,3 @@
     </div>
   </div>
 </div>
-

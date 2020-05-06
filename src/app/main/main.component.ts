@@ -7,7 +7,6 @@ import {AppComponentEventEmitterService} from './event-emmiter.service';
 import { User } from '../auth/_models/user';
 import { AuthenticationService } from '../auth/_services/authentication.service';
 import {HttpClient} from '@angular/common/http';
-import {StudentInformationModel} from './student-services/student-information/student-information.model';
 
 declare var $: any;
 
@@ -77,7 +76,10 @@ export class MainComponent implements OnInit {
   }
 
   OnCourseClicked(element: HTMLLIElement) {
+    console.log(element.value);
     console.log(this.semesterCourses[element.value]);
+    localStorage.setItem('selectedCourse', JSON.stringify(this.semesterCourses[element.value]));
+    console.log(localStorage.getItem('selectedCourse'));
     this.router.navigate(['course'], {relativeTo: this.route});
   }
 
@@ -142,22 +144,34 @@ export class MainComponent implements OnInit {
     this.cgpa = JSON.parse(localStorage.getItem('currentUser')).CGPA;
 
 
-    // here we are requesting the api for the courses response
-    // tslint:disable-next-line:max-line-length
-    this.http.get('http://localhost:12345/api/EnrollCourses/ListOfEnrollCourses?YEAR=2016&C_CODE=1&D_ID=1&MAJ_ID=1&RN=1')
-      .subscribe(
+    this.http.get<any>('http://localhost:12345/api/EnrollCourses/ListOfEnrollCourses?',
+      { params: { YEAR: JSON.parse(localStorage.getItem('currentUser')).YEAR,
+                          C_CODE: JSON.parse(localStorage.getItem('currentUser')).C_CODE,
+                          D_ID: JSON.parse(localStorage.getItem('currentUser')).D_ID,
+                          MAJ_ID: JSON.parse(localStorage.getItem('currentUser')).MAJ_ID,
+                          RN: JSON.parse(localStorage.getItem('currentUser')).RN }})
+      .pipe().subscribe(
         s => {
           for (const index in s) {
             this.semesterCourses[index] = new CourseModal(s[index].SUB_NM, s[index].SUB_CODE);
+          }
         }
-        }
-      );
+    );
+    // here we are requesting the api for the courses response
+    // tslint:disable-next-line:max-line-length
+    // this.http.get('http://localhost:12345/api/EnrollCourses/ListOfEnrollCourses?YEAR=2016&C_CODE=1&D_ID=1&MAJ_ID=1&RN=1')
+    //   .subscribe(
+    //     s => {
+    //       for (const index in s) {
+    //         this.semesterCourses[index] = new CourseModal(s[index].SUB_NM, s[index].SUB_CODE);
+    //     }
+    //     }
+    //   );
     // here we are assigning the courses to the store so that we can use it from other components
     this.store.select('fromCourse').subscribe(
       state => {
         state.semesterCourses = this.semesterCourses;
         // this.semesterCourses = state.semesterCourses;
-        // console.log(state.semesterCourses);
       }
     );
     // from the role based authentiction

@@ -10,15 +10,16 @@ import {map} from 'rxjs/operators';
   styleUrls: ['./download-file.component.css']
 })
 export class DownloadFileComponent implements OnInit {
+  private filePath: string;
+  private fileName: string;
   constructor(private http: HttpClient) { }
-  attachmentFileName = 'Screenshot_2020-01-15-23-28-34-38.png';
-  folderPath = '505c-f758';
   ngOnInit(): void {
+    this.fileName = 'login page.txt.txt';
+    this.filePath =  `C:\\Users\\Saqlain abbas\\source\\repos\\LMS-API\\LMS-API\\Files\\assignments\\dcb5-c821\\login page.txt`;
   }
   DownLoadFiles() {
-    const fileName = this.attachmentFileName;
     // file type extension
-    const checkFileType =  fileName.split('.').pop();
+    const checkFileType =  this.fileName.split('.').pop();
     let fileType;
     if (checkFileType === '.txt') {
       fileType = 'text/plain';
@@ -50,51 +51,90 @@ export class DownloadFileComponent implements OnInit {
     if (checkFileType === '.csv') {
       fileType = 'text/csv';
     }
-    this.DownloadFile(fileName, fileType)
+    this.DownloadFile(this.filePath)
       .subscribe(
         success => {
-          saveAs(success, fileName);
+          saveAs(success, this.fileName);
         },
         err => {
           alert('Server error while downloading file.');
         }
       );
   }
-  DownloadFile(filePath: string, fileType: string): Observable<any> {
-    const fileExtension = fileType;
-    const input = filePath;
-    return this.http.post('http://localhost:12345/api/Download/DownloadFile?folderPath=' + this.folderPath + '&fileName=' + this.attachmentFileName, '',
+  DownloadFile(filePath: string): Observable<any> {
+    return this.http.post('http://localhost:12345/api/Download/DownloadFile?filePath=' + filePath , '',
       { responseType: 'blob',
                 observe: 'response'})
       .pipe(
           map((res: any) => {
-            return new Blob([res.body], { type: fileExtension });
+             return new Blob([res.body]);
         })
-        // (res) => {
-        //   const blob = new Blob([res.blob()], {type: fileExtension} );
-        //   return blob;
-        // }
       );
   }
-
-
-
-  //   DownloadFile(filePath: string, fileType: string): Observable<any> {
-  //
-  //   let fileExtension = fileType;
-  //   let input = filePath;
-  //
-  //   return this.http.get(this.yourApiUrl + "?fileName=" + input, {
-  //     responseType: 'blob',
-  //     observe: 'response'
-  //   })
-  //     .pipe(
-  //       map((res: any) => {
-  //         return new Blob([res.body], { type: fileExtension });
-  //       })
-  //     );
-  // }
 }
+
+
+
+// DownLoadFiles() {
+//   const fileName = this.attachmentFileName;
+//   // file type extension
+//   const checkFileType =  fileName.split('.').pop();
+//   let fileType;
+//   if (checkFileType === '.txt') {
+//     fileType = 'text/plain';
+//   }
+//   if (checkFileType === '.pdf') {
+//     fileType = 'application/pdf';
+//   }
+//   if (checkFileType === '.doc') {
+//     fileType = 'application/vnd.ms-word';
+//   }
+//   if (checkFileType === '.docx') {
+//     fileType = 'application/vnd.ms-word';
+//   }
+//   if (checkFileType === '.xls') {
+//     fileType = 'application/vnd.ms-excel';
+//   }
+//   if (checkFileType === '.png') {
+//     fileType = 'image/png';
+//   }
+//   if (checkFileType === '.jpg') {
+//     fileType = 'image/jpeg';
+//   }
+//   if (checkFileType === '.jpeg') {
+//     fileType = 'image/jpeg';
+//   }
+//   if (checkFileType === '.gif') {
+//     fileType = 'image/gif';
+//   }
+//   if (checkFileType === '.csv') {
+//     fileType = 'text/csv';
+//   }
+//   this.DownloadFile(fileName, fileType)
+//     .subscribe(
+//       success => {
+//         saveAs(success, fileName);
+//       },
+//       err => {
+//         alert('Server error while downloading file.');
+//       }
+//     );
+// }
+// DownloadFile(filePath: string, fileType: string): Observable<any> {
+//
+//   filePath =      `C:\\Users\\Saqlain abbas\\source\\repos\\LMS-API\\LMS-API\\Files\\assignments\\6614-3428\\LMSPro.zip`;
+// // `C:\\Users\\Saqlain abbas\\source\\repos\\LMS-API\\LMS-API\\Files\\assignments\\68fa-b38a\\Screenshot_2020-01-15-23-28-27-01.png`;
+//
+// return this.http.post('http://localhost:12345/api/Download/DownloadFile?filePath=' + filePath , '',
+//   { responseType: 'blob',
+//     observe: 'response'})
+//   .pipe(
+//     map((res: any) => {
+//       return new Blob([res.body]);
+//     })
+//
+//   );
+// }
 
 
 
