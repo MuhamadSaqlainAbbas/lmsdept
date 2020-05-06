@@ -27,18 +27,41 @@
       </div>
     </div>
     <div class="app-header__menu">
-            <span>
-                <button id="app-header-mobile-menu"
-                        type="button"
-                        class="btn-icon btn-icon-only btn btn-primary btn-sm mobile-toggle-header-nav"
-                        (click)="OnAppHeaderMobileMenu()">
+
+      <div class="collapse" id="contentId">
+        <div class="card" style="margin-top: 250px;">
+          <div class="card-header" style="color:white;min-width: 200px;background-color:rgba(0,105,217,0.63);">
+            Teacher Name
+          </div>
+          <div class="card-body">
+            <div>
+              <button class="btn btn-link">Settings</button>
+            </div>
+            <div>
+              <button class="btn btn-link" (click)="onShowResetForm()">Recover Password</button>
+            </div>
+            <div>
+              <button class="btn btn-link">Logout</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <span>
+        <button id="app-header-mobile-menu" style="transition: .4s"
+                type="button"
+                class="fixed btn-icon btn-icon-only btn btn-primary btn-sm mobile-toggle-header-nav"
+                data-toggle="collapse"
+                data-target="#contentId"
+                aria-expanded="false"
+                aria-controls="contentId"
+                (click)="OnAppHeaderMobileMenu()">
                     <span class="btn-icon-wrapper">
                         <i class="fa fa-ellipsis-v fa-w-6"></i>
                     </span>
                 </button>
-            </span>
+      </span>
     </div>
-    <div id="content_mobile" class="app-header__content">
+    <div id="content_mobile hider" class="app-header__content">
       <div class="app-header-left">
 
       </div>
@@ -64,7 +87,7 @@
                             <div class="widget-content-wrapper">
                               <div class="widget-content-left mr-3">
                                 <img width="42" class="rounded-circle"
-                                     src="../assets/images/avatars/1.jpg"
+                                     src="../../assets/images/avatars/1.jpg"
                                      alt="">
                               </div>
                               <div class="widget-content-left">

@@ -1,4 +1,10 @@
 /* Header Css */
+
+@media (max-width: 992px) {
+  .hider{
+    display: none !important;
+  }
+}
 #background-image{
   background: url("https://images.fineartamerica.com/images/artworkimages/mediumlarge/1/gc-university-lahore-zubair-qureshi.jpg");
   position: absolute;
