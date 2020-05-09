@@ -3,12 +3,15 @@ import * as fromApp from '../../../store/app.reducers';
 import {Store} from '@ngrx/store';
 import {SubmitAssignmentModal} from './submit-assignment.modal';
 import {HttpClient} from '@angular/common/http';
-import {CourseMaterialModal} from '../course-material/course-material.modal';
+import {SlideInFromLeft} from '../../../transitions';
 
 @Component({
   selector: 'app-submit-assignment',
   templateUrl: './submit-assignment.component.html',
-  styleUrls: ['./submit-assignment.component.css']
+  styleUrls: ['./submit-assignment.component.css'],
+  animations: [
+    SlideInFromLeft()
+  ]
 })
 export class SubmitAssignmentComponent implements OnInit {
   public assignments: SubmitAssignmentModal[] = [];

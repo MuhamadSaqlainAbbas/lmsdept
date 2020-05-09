@@ -4,13 +4,17 @@ import {Store} from '@ngrx/store';
 import {AppComponentEventEmitterService} from '../../event-emmiter.service';
 import {AnnouncementModal} from '../../home/announcement.modal';
 import {HttpClient} from '@angular/common/http';
+import {SlideInFromLeft} from '../../../transitions';
 
 declare var $: any;
 
 @Component({
   selector: 'app-annoucement',
   templateUrl: './annoucement.component.html',
-  styleUrls: ['./annoucement.component.css']
+  styleUrls: ['./annoucement.component.css'],
+  animations: [
+    SlideInFromLeft()
+  ]
 })
 export class AnnoucementComponent implements OnInit {
 

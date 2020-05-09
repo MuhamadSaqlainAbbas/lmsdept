@@ -3,13 +3,16 @@ import * as fromApp from '../../../store/app.reducers';
 import {Store} from '@ngrx/store';
 import {LeaveStatusModal} from './leave-status.modal';
 import {AbsentteeModal} from './absenttee.modal';
-import {CourseModal} from '../course.modal';
 import {HttpClient} from '@angular/common/http';
+import {SlideInFromLeft} from '../../../transitions';
 
 @Component({
   selector: 'app-leave-status',
   templateUrl: './leave-status.component.html',
-  styleUrls: ['./leave-status.component.css']
+  styleUrls: ['./leave-status.component.css'],
+  animations: [
+    SlideInFromLeft()
+  ]
 })
 export class LeaveStatusComponent implements OnInit {
   public absenttee: AbsentteeModal[] = [];
@@ -30,6 +33,7 @@ export class LeaveStatusComponent implements OnInit {
           SUB_CODE: JSON.parse(localStorage.getItem('selectedCourse')).courseCode}})
       .pipe().subscribe(
       s => {
+        // tslint:disable-next-line:forin
         for (const index in s) {
           this.absenttee[index] = new AbsentteeModal(s[index].DA_DATE);
         }

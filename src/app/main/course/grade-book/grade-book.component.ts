@@ -4,11 +4,15 @@ import * as fromApp from '../../../store/app.reducers';
 import {GradeBookModal} from './grade-book.modal';
 import {GradeTypeModal} from './grade-type.modal';
 import {HttpClient} from '@angular/common/http';
+import {SlideInFromLeft} from '../../../transitions';
 
 @Component({
   selector: 'app-grade-book',
   templateUrl: './grade-book.component.html',
-  styleUrls: ['./grade-book.component.css']
+  styleUrls: ['./grade-book.component.css'],
+  animations: [
+    SlideInFromLeft()
+  ]
 })
 export class GradeBookComponent implements OnInit {
   public gradebook: GradeBookModal;
@@ -39,6 +43,7 @@ export class GradeBookComponent implements OnInit {
       })
       .pipe().subscribe(
       s => {
+        // tslint:disable-next-line:forin
         for (const index in s) {
           this.assignments[index] = new GradeTypeModal(s[index].ASSIGNMENT_TITLE, s[index].ASS_OBT_MRKS, s[index].ASS_TOT_MRKS);
         }
@@ -59,6 +64,7 @@ export class GradeBookComponent implements OnInit {
       })
       .pipe().subscribe(
       s => {
+        // tslint:disable-next-line:forin
         for (const index in s) {
           this.presentations[index] = new GradeTypeModal(s[index].ASSIGNMENT_TITLE, s[index].ASS_OBT_MRKS, s[index].ASS_TOT_MRKS);
         }
@@ -78,6 +84,7 @@ export class GradeBookComponent implements OnInit {
       })
       .pipe().subscribe(
       s => {
+        // tslint:disable-next-line:forin
         for (const index in s) {
           this.quizes[index] = new GradeTypeModal(s[index].ASSIGNMENT_TITLE, s[index].ASS_OBT_MRKS, s[index].ASS_TOT_MRKS);
         }

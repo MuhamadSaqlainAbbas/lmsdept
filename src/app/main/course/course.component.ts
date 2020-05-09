@@ -1,14 +1,19 @@
 import {Component, OnChanges, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import * as fromApp from './../../store/app.reducers';
 import {Store} from '@ngrx/store';
+import {SlideInFromLeft} from '../../transitions';
 
 declare var $: any;
+
 
 @Component({
   selector: 'app-course',
   templateUrl: './course.component.html',
-  styleUrls: ['./course.component.css']
+  styleUrls: ['./course.component.css'],
+  animations: [
+    SlideInFromLeft()
+  ]
 })
 export class CourseComponent implements OnInit, OnDestroy {
   mySubscription: any;

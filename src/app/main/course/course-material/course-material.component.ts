@@ -7,11 +7,15 @@ import {Observable, Subscription} from 'rxjs';
 import {saveAs} from 'file-saver';
 import {map} from 'rxjs/operators';
 import {CoursesSelectedCourseService} from '../courses-selected-course.service';
+import {SlideInFromLeft} from '../../../transitions';
 
 @Component({
   selector: 'app-course-material',
   templateUrl: './course-material.component.html',
-  styleUrls: ['./course-material.component.css']
+  styleUrls: ['./course-material.component.css'],
+  animations: [
+    SlideInFromLeft()
+  ]
 })
 export class CourseMaterialComponent implements OnInit {
   public courseMaterial: CourseMaterialModal[] = [];
