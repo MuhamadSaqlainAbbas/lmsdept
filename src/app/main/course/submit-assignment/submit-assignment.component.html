@@ -7,7 +7,7 @@
         <tr>
           <th>Name</th>
           <th>Due Date</th>
-          <th>Assignment Material</th>
+          <th>Assignment Marks</th>
           <th>Submission Status</th>
         </tr>
         </thead>
@@ -15,7 +15,7 @@
         <tr *ngFor="let assignment of this.assignments;">
           <td style="min-width: 100px;">{{assignment.assignmentName}}</td>
           <td style="min-width: 100px;">{{assignment.dueDate}}</td>
-          <td></td>
+          <td style="min-width: 100px;">{{assignment.assignmentMarks}}</td>
           <td>
             <input type="file" id="file" multiple (change)="getFileDetails($event)">
             <a class="btn btn-primary btn-sm text-white" (click)="uploadFiles()">

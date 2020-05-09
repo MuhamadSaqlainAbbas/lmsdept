@@ -38,6 +38,8 @@ export class StudentInformationComponent implements OnInit {
     this.studentInformation.degreeNumber = obj.DEG_NO;
     this.studentInformation.degreeRegYear = obj.DEG_REC_YEAR;
     this.studentInformation.email = obj.EMAIL;
+    this.studentInformation.photo = obj.PHTO;
+    console.log(this.studentInformation);
     this.store.select('fromStudentService').subscribe(
       state => {
         state.studentInformation = this.studentInformation;

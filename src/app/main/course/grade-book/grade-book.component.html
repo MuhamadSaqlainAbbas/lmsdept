@@ -26,7 +26,7 @@
               </thead>
               <tbody>
               <tr
-                *ngFor="let gradeType of this.gradebook.assignments;">
+                *ngFor="let gradeType of this.assignments;">
                 <td>{{gradeType.gradeType}}</td>
                 <td>{{gradeType.totalMarks}}</td>
                 <td>{{gradeType.obtainedMarks}}</td>
@@ -60,7 +60,7 @@
               </thead>
               <tbody>
               <tr
-                *ngFor="let gradeType of this.gradebook.quizes;">
+                *ngFor="let gradeType of this.quizes;">
                 <td>{{gradeType.gradeType}}</td>
                 <td>{{gradeType.totalMarks}}</td>
                 <td>{{gradeType.obtainedMarks}}</td>
@@ -163,7 +163,7 @@
               </thead>
               <tbody>
               <tr
-                *ngFor="let gradeType of this.gradebook.classActivity;">
+                *ngFor="let gradeType of this.presentations;">
                 <td>{{gradeType.gradeType}}</td>
                 <td>{{gradeType.totalMarks}}</td>
                 <td>{{gradeType.obtainedMarks}}</td>

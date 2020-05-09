@@ -3,6 +3,7 @@ import * as fromApp from '../../../store/app.reducers';
 import {Store} from '@ngrx/store';
 import {AppComponentEventEmitterService} from '../../event-emmiter.service';
 import {AnnouncementModal} from '../../home/announcement.modal';
+import {HttpClient} from '@angular/common/http';
 
 declare var $: any;
 
@@ -15,10 +16,28 @@ export class AnnoucementComponent implements OnInit {
 
   announcements: AnnouncementModal[];
   constructor(private clickEvent: AppComponentEventEmitterService,
-              private store: Store<fromApp.AppState>) {
+              private store: Store<fromApp.AppState>,
+              private http: HttpClient) {
   }
 
   ngOnInit() {
+    // to get the section of the selected course
+    this.http.get<any>('http://localhost:12345/api/Section/GetSectionThroughSubCode?',
+      {
+        params: {
+          YEAR: JSON.parse(localStorage.getItem('currentUser')).YEAR,
+          C_CODE: JSON.parse(localStorage.getItem('currentUser')).C_CODE,
+          D_ID: JSON.parse(localStorage.getItem('currentUser')).D_ID,
+          MAJ_ID: JSON.parse(localStorage.getItem('currentUser')).MAJ_ID,
+          RN: JSON.parse(localStorage.getItem('currentUser')).RN,
+          SUB_CODE: JSON.parse(localStorage.getItem('selectedCourse')).courseCode
+        }
+      })
+      .pipe().subscribe(
+      s => {
+        localStorage.setItem('section', s[0].SECTION);
+      }
+    );
     this.store.select('fromCourse').subscribe(
       state => {
         this.announcements = state.announcements;

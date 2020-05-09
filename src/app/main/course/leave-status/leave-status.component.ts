@@ -20,28 +20,43 @@ export class LeaveStatusComponent implements OnInit {
               private http: HttpClient) { }
 
   ngOnInit() {
-    // tslint:disable-next-line:max-line-length
-    this.http.get('http://localhost:12345/api/CourseAbsenttee/CourseAbsentteeBySubCode?YEAR=2016&D_ID=1&MAJ_ID=1&C_CODE=1&RN=1&SUB_CODE=SUB_CODE_A')
-      .subscribe(
-        s => {
-          for (const index in s) {
-            this.absenttee[index] = new AbsentteeModal(s[index].DA_DATE);
+    // fetching the dates of the absenttees from the web
+    this.http.get<any>('http://localhost:12345/api/CourseAbsenttee/CourseAbsentteeBySubCode?',
+      { params: { YEAR: JSON.parse(localStorage.getItem('currentUser')).YEAR,
+          D_ID: JSON.parse(localStorage.getItem('currentUser')).D_ID,
+          MAJ_ID: JSON.parse(localStorage.getItem('currentUser')).MAJ_ID,
+          C_CODE: JSON.parse(localStorage.getItem('currentUser')).C_CODE,
+          RN: JSON.parse(localStorage.getItem('currentUser')).RN,
+          SUB_CODE: JSON.parse(localStorage.getItem('selectedCourse')).courseCode}})
+      .pipe().subscribe(
+      s => {
+        for (const index in s) {
+          this.absenttee[index] = new AbsentteeModal(s[index].DA_DATE);
+        }
+      }
+    );
+
+    this.http.get<any>('http://localhost:12345/api/CourseAttendance/CourseAttendanceBySubCode?',
+      { params: { YEAR: JSON.parse(localStorage.getItem('currentUser')).YEAR,
+          D_ID: JSON.parse(localStorage.getItem('currentUser')).D_ID,
+          MAJ_ID: JSON.parse(localStorage.getItem('currentUser')).MAJ_ID,
+          C_CODE: JSON.parse(localStorage.getItem('currentUser')).C_CODE,
+          RN: JSON.parse(localStorage.getItem('currentUser')).RN}})
+      .pipe().subscribe(
+      s => {
+        for (const index in s) {
+          if ((JSON.parse(localStorage.getItem('selectedCourse')).courseCode) === s[index].SUB_CODE) {
+            this.present = s[index].PRESENT;
+            this.absent = s[index].ABSENT;
+            this.leaveStatus = new LeaveStatusModal(s[index].PRESENT, s[index].ABSENT, this.absenttee);
           }
         }
-      );
-    this.http.get('http://localhost:12345/api/CourseAttendance/CourseAttendanceBySubCode?YEAR=2016&D_ID=1&MAJ_ID=1&C_CODE=1&RN=1')
-      .subscribe(
-        s => {
-          this.present = s[0].PRESENT;
-          this.absent = s[0].ABSENT;
-          this.leaveStatus = new LeaveStatusModal(s[0].PRESENT, s[0].ABSENT, this.absenttee);
-        }
-      );
+      }
+    );
     this.store.select('fromCourse').subscribe(
       state => {
         state.leaveStatus = this.leaveStatus;
       }
     );
   }
-
 }

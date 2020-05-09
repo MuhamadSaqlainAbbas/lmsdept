@@ -22,6 +22,7 @@ export class StudentInformationModel {
     public degreeNumber: number;
     public degreeRegYear: number;
     public email: string;
+    public photo: string;
     constructor() {
     }
     // constructor( registrationNo: string, studentName: string, fatherName: string, cnic: string, phoneNumber: number,

@@ -3,6 +3,7 @@ import * as fromApp from '../../../store/app.reducers';
 import {Store} from '@ngrx/store';
 import {SubmitAssignmentModal} from './submit-assignment.modal';
 import {HttpClient} from '@angular/common/http';
+import {CourseMaterialModal} from '../course-material/course-material.modal';
 
 @Component({
   selector: 'app-submit-assignment',
@@ -10,15 +11,39 @@ import {HttpClient} from '@angular/common/http';
   styleUrls: ['./submit-assignment.component.css']
 })
 export class SubmitAssignmentComponent implements OnInit {
-  public assignments: SubmitAssignmentModal[];
+  public assignments: SubmitAssignmentModal[] = [];
   myFiles: string[] = [];
   constructor(private store: Store<fromApp.AppState>,
               private httpService: HttpClient) { }
 
   ngOnInit() {
+    // api call to get the list of the course assignments
+    this.httpService.get<any>('http://localhost:12345/api/CourseAssignments/CourseAssignmentsBySubCode?',
+      {
+        params: {
+          dep_id: JSON.parse(localStorage.getItem('currentUser')).D_ID,
+          maj_id: JSON.parse(localStorage.getItem('currentUser')).MAJ_ID,
+          c_code: JSON.parse(localStorage.getItem('currentUser')).C_CODE,
+          sub_code: JSON.parse(localStorage.getItem('selectedCourse')).courseCode,
+          section: localStorage.getItem('section')
+        }
+      })
+      .pipe().subscribe(
+      s => {
+        for (const index in s) {
+          this.assignments[index] = new SubmitAssignmentModal();
+          this.assignments[index].assignmentName = s[index].ASSIGNMENT_TITLE;
+          this.assignments[index].assignmentMarks = s[index].MARK;
+          this.assignments[index].dueDate = s[index].DUE_DATE;
+          this.assignments[index].assignmentDownloadFilename = s[index].FILE_NAME;
+          this.assignments[index].assignmentDownloadFilepath = s[index].FILE_PATH;
+        }
+      }
+    );
+
     this.store.select('fromCourse').subscribe(
       state => {
-        this.assignments = state.submitAssigments;
+        state.submitAssigments = this.assignments;
       }
     );
   }

@@ -16,7 +16,6 @@ export class CourseMaterialComponent implements OnInit {
   public courseMaterial: CourseMaterialModal[] = [];
   private filePath: string;
   private fileName: string;
-
   constructor(private store: Store<fromApp.AppState>,
               private http: HttpClient) {
     this.fileName = 'login page.txt.txt';
@@ -24,13 +23,15 @@ export class CourseMaterialComponent implements OnInit {
   }
 
   ngOnInit() {
+    // here we are getting the course materials for the course code
     this.http.get<any>('http://localhost:12345/api/CourseMaterials/CourseMaterialsBySubCode?',
       {
         params: {
           dep_id: JSON.parse(localStorage.getItem('currentUser')).D_ID,
           maj_id: JSON.parse(localStorage.getItem('currentUser')).MAJ_ID,
           c_code: JSON.parse(localStorage.getItem('currentUser')).C_CODE,
-          sub_code: JSON.parse(localStorage.getItem('selectedCourse')).courseCode
+          sub_code: JSON.parse(localStorage.getItem('selectedCourse')).courseCode,
+          section: localStorage.getItem('section')
         }
       })
       .pipe().subscribe(

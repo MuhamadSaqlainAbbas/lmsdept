@@ -93,11 +93,11 @@ const initialState: State = {
     // new CourseMaterialModal('Assignment-03-F19-Proofs-A.pdf')
   ],
   submitAssigments: [
-    new SubmitAssignmentModal('Assignment No 1', '12/2/20', ''),
-    new SubmitAssignmentModal('Assignment No 2', '12/3/20', ''),
-    new SubmitAssignmentModal('Assignment No 3', '22/4/20', ''),
-    new SubmitAssignmentModal('Assignment No 4', '02/6/20', ''),
-    new SubmitAssignmentModal('Assignment No 5', '22/7/20', '')
+    // new SubmitAssignmentModal('Assignment No 1', '12/2/20', ''),
+    // new SubmitAssignmentModal('Assignment No 2', '12/3/20', ''),
+    // new SubmitAssignmentModal('Assignment No 3', '22/4/20', ''),
+    // new SubmitAssignmentModal('Assignment No 4', '02/6/20', ''),
+    // new SubmitAssignmentModal('Assignment No 5', '22/7/20', '')
   ],
   gradeBook: new GradeBookModal([], [], [], [], []),
   //   [
