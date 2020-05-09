@@ -1,91 +1,90 @@
-<div class="row">
-  <div class="col-sm-12">
-    <div class="card shadow">
-      <div class="card-header shadow-sm  d-flex justify-content-between">
-        <div>Announcements</div>
-        <div class="badge badge-pill badge-primary p-2">
-          <div class="hide-view">0 new</div>
-          <div class="show-view" style="display: none">0-N</div>
-        </div>
-      </div>
-      <div class="card-body mb-3" style="height: 30rem;overflow: hidden;overflow-y: scroll">
-
-        <div class="list-group shadow"
-             *ngFor="let announcement of this.announcements;">
-          <div class="d-flex justify-content-between">
-            <div class="p-1 bg-danger"></div>
-            <a href="#" class="list-group-item list-group-item-action">
-              <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">{{this.announcement.announcementTitle}}</h5>
-                <small>just now</small>
-              </div>
-              <p class="mb-1">{{this.announcement.announcementDescription}}</p>
-              <small>{{this.announcement.announcementDate}}</small>
-            </a>
+<div [@SlideInFromLeft]>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card shadow">
+        <div class="card-header shadow-sm  d-flex justify-content-between">
+          <div>Announcements</div>
+          <div class="badge badge-pill badge-primary p-2">
+            <div class="hide-view">0 new</div>
+            <div class="show-view" style="display: none">0-N</div>
           </div>
         </div>
+        <div class="card-body mb-3" style="height: 30rem;overflow: hidden;overflow-y: scroll">
 
+          <div class="list-group shadow"
+               *ngFor="let announcement of this.announcements;">
+            <div class="d-flex justify-content-between">
+              <div class="p-1 bg-danger"></div>
+              <a href="#" class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-between">
+                  <h5 class="mb-1">{{this.announcement.announcementTitle}}</h5>
+                  <small>just now</small>
+                </div>
+                <p class="mb-1">{{this.announcement.announcementDescription}}</p>
+                <small>{{this.announcement.announcementDate}}</small>
+              </a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-4 mb-2">
+    <div class="col-md-12 col-lg-4">
+      <div class="card shadow">
+        <div class="card-header">
+          Overall Attendance Report
+        </div>
+        <div class="card-body">
+          <div class="form-group mt-2">
+            <select class="form-control" name="" id="input_attendence_course"
+                    (change)="OnChange($event)">
+              <option
+                *ngFor="let courseAttendace of this.semesterAttendance;let i=index"
+                value="{{i}}" >{{courseAttendace.courseTitle}}</option>
+            </select>
+          </div>
+          <div class="chart-wrapper">
+            <canvas baseChart #chart
+                    [data]="pieChartData"
+                    [labels]="pieChartLabels"
+                    [chartType]="pieChartType"
+                    [options]="pieChartOptions"
+                    [plugins]="pieChartPlugins"
+                    [legend]="pieChartLegend">
+            </canvas>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="row pb-2">
+            <div class="col-sm-6 m-auto">Presesnts: {{this.pieChartData[0]}}</div>
+            <div class="col-sm-6 m-auto">Absents: {{this.pieChartData[1]}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-12 col-lg-8 mt-sm-2 mt-lg-0">
+      <div class="card shadow">
+        <div class="card-header">
+          Overall Attendance Report
+        </div>
+        <div class="card-body">
+          <div class="chart-wrapper">
+            <canvas baseChart
+                    [datasets]="lineChartData"
+                    [labels]="lineChartLabels"
+                    [options]="lineChartOptions"
+                    [colors]="lineChartColors"
+                    [legend]="lineChartLegend"
+                    [chartType]="lineChartType"
+                    [plugins]="lineChartPlugins">
+            </canvas>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
-
-<div class="row mt-4 mb-2">
-  <div class="col-md-12 col-lg-4">
-    <div class="card shadow">
-      <div class="card-header">
-        Overall Attendance Report
-      </div>
-      <div class="card-body">
-        <div class="form-group mt-2">
-          <select class="form-control" name="" id="input_attendence_course"
-                  (change)="OnChange($event)">
-            <option
-              *ngFor="let courseAttendace of this.semesterAttendance;let i=index"
-              value="{{i}}" >{{courseAttendace.courseTitle}}</option>
-          </select>
-        </div>
-        <div class="chart-wrapper">
-          <canvas baseChart #chart
-                  [data]="pieChartData"
-                  [labels]="pieChartLabels"
-                  [chartType]="pieChartType"
-                  [options]="pieChartOptions"
-                  [plugins]="pieChartPlugins"
-                  [legend]="pieChartLegend">
-          </canvas>
-        </div>
-      </div>
-      <div class="card-footer">
-        <div class="row pb-2">
-          <div class="col-sm-6 m-auto">Presesnts: {{this.pieChartData[0]}}</div>
-          <div class="col-sm-6 m-auto">Absents: {{this.pieChartData[1]}}</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-md-12 col-lg-8 mt-sm-2 mt-lg-0">
-    <div class="card shadow">
-      <div class="card-header">
-        Overall Attendance Report
-      </div>
-      <div class="card-body">
-        <div class="chart-wrapper">
-          <canvas baseChart
-                  [datasets]="lineChartData"
-                  [labels]="lineChartLabels"
-                  [options]="lineChartOptions"
-                  [colors]="lineChartColors"
-                  [legend]="lineChartLegend"
-                  [chartType]="lineChartType"
-                  [plugins]="lineChartPlugins">
-          </canvas>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-

@@ -7,6 +7,7 @@ import {Store} from '@ngrx/store';
 import {ProgressReportModal} from './progress-report-modal';
 import {AnnouncementModal} from './announcement.modal';
 import {HomeAnnouncementService} from './home-announcement.service';
+import {SlideInFromLeft} from '../../transitions';
 
 
 // tslint:disable-next-line:class-name
@@ -24,7 +25,10 @@ function chartInitialization() {
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.css'],
+  animations: [
+    SlideInFromLeft()
+  ]
 })
 export class HomeComponent implements OnInit {
   @ViewChild('chart') pieChart: ElementRef;

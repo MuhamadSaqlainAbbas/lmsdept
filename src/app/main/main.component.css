@@ -1,6 +1,15 @@
 /* Header Css */
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,700;1,700&display=swap');
+
+#heading{
+  font-family: 'Ubuntu', sans-serif;
+  font-size: 30px;
+  color: #67717a;
+}
+
 
 @media (max-width: 992px) {
+
   .hider{
     display: none !important;
   }
@@ -820,9 +829,9 @@ a, button, .btn {
 }
 
 .app-header__logo .logo-src {
-  height: 30px;
-  width: 120px;
-  background: url(src/assets/images/logo-2.png)
+  height: 40px;
+  width: 115px;
+  background: url(src/assets/images/gc-loogo-resized.png)
 }
 
 .app-header__menu, .app-header__mobile-menu {

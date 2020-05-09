@@ -4,11 +4,15 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 
 import {AuthenticationService} from './_services';
+import {FadeSlideInDown} from '../transitions';
 
 @Component({
   selector: 'app-auth',
   templateUrl: './auth.component.html',
-  styleUrls: ['./auth.component.css']
+  styleUrls: ['./auth.component.css'],
+  animations: [
+    FadeSlideInDown()
+  ]
 })
 export class AuthComponent implements OnInit {
   loginForm: FormGroup;

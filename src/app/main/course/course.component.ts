@@ -16,16 +16,16 @@ export class CourseComponent implements OnInit, OnDestroy {
               private route: ActivatedRoute,
               private store: Store<fromApp.AppState>) {
     // tslint:disable-next-line:only-arrow-functions
-    this.router.routeReuseStrategy.shouldReuseRoute = function() {
+    /*this.router.routeReuseStrategy.shouldReuseRoute = function() {
       return false;
-    };
+    };*/
 
-    this.mySubscription = this.router.events.subscribe((event) => {
+    /*this.mySubscription = this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         // Trick the Router into believing it's last link wasn't previously loaded
         this.router.navigated = false;
       }
-    });
+    });*/
   }
 
   ngOnInit() {
@@ -62,8 +62,8 @@ export class CourseComponent implements OnInit, OnDestroy {
     this.router.navigate(['askQuestion'], {relativeTo: this.route});
   }
   ngOnDestroy() {
-    if (this.mySubscription) {
+    /*if (this.mySubscription) {
       this.mySubscription.unsubscribe();
-    }
+    }*/
   }
 }

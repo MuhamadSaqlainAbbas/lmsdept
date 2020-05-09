@@ -13,7 +13,11 @@
         </thead>
         <tbody>
         <tr *ngFor="let assignment of this.assignments;">
-          <td style="min-width: 100px;">{{assignment.assignmentName}}</td>
+          <td style="min-width: 100px;">
+            <button class="btn-sm btn btn-link" (click)="OnAssignmentClicked(assignment)">
+              {{assignment.assignmentName}}
+            </button>
+          </td>
           <td style="min-width: 100px;">{{assignment.dueDate}}</td>
           <td style="min-width: 100px;">{{assignment.assignmentMarks}}</td>
           <td>

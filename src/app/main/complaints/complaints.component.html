@@ -1,5 +1,5 @@
 <!--Adjusted columns in this file for form-->
-<div class="p-lg-5 mt-5 p-sm-3">
+<div class="p-lg-5 mt-5 p-sm-3" [@SlideInFromLeft]>
   <form #form="ngForm" (ngSubmit)="onSubmit(form)">
     <div class="alert alert-danger d-flex justify-content-between" *ngIf="show" (click)="onClose()">
       Invalid Input

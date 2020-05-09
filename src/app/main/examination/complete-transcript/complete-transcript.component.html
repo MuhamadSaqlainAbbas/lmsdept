@@ -1,60 +1,62 @@
-<div class="row">
-  <div class="col-sm-12">
-    <table class="table table-bordered">
-      <thead class="bg-light">
-      <tr>
-        <th>Credits Attempts</th>
-        <th>Credits Accepted Towards Degree</th>
-        <th>Credits Earned</th>
-        <th>CGPA</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr>
-        <td scope="row">{{this.completeTranscript.creditAttempts}}</td>
-        <td>{{this.completeTranscript.creditAcceptedTowardsDegree}}</td>
-        <td>{{this.completeTranscript.creditEarned}}</td>
-        <td>{{this.completeTranscript.CGPA}}</td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
-<div class="row"
-     *ngFor="let semesterTranscript of this.completeTranscript.semestersTranscript;">
-  <div class="col-sm-12">
-    <div class="card">
-      <div class="card-header"><b>Semester-{{semesterTranscript.semesterNo}}</b></div>
-      <table class="table m-0 table-bordered">
+<div [@SlideInFromLeft]>
+  <div class="row">
+    <div class="col-sm-12">
+      <table class="table table-bordered">
         <thead class="bg-light">
         <tr>
-          <th>Course-Code</th>
-          <th>Course-Title</th>
-          <th>Credit-Hour</th>
-          <th>Grade-Pts</th>
-          <th>Grade</th>
+          <th>Credits Attempts</th>
+          <th>Credits Accepted Towards Degree</th>
+          <th>Credits Earned</th>
+          <th>CGPA</th>
         </tr>
         </thead>
         <tbody>
-        <tr
-          *ngFor="let subjectTranscript of this.semesterTranscript.semesterSubjects;">
-          <td scope="row">{{subjectTranscript.courseCode}}</td>
-          <td>{{subjectTranscript.courseTitle}}</td>
-          <td>{{subjectTranscript.creditHour}}</td>
-          <td>{{subjectTranscript.gradePoints}}</td>
-          <td>{{subjectTranscript.grade}}</td>
+        <tr>
+          <td scope="row">{{this.completeTranscript.creditAttempts}}</td>
+          <td>{{this.completeTranscript.creditAcceptedTowardsDegree}}</td>
+          <td>{{this.completeTranscript.creditEarned}}</td>
+          <td>{{this.completeTranscript.CGPA}}</td>
         </tr>
         </tbody>
       </table>
-      <div class="card-footer">
-        <div class="row pb-2">
-          <div class="col-sm-3 text-center m-auto">Cr.Hr. For GPA = {{semesterTranscript.creditHoursForCGPA}}</div>
-          <div class="col-sm-3 text-center m-auto">Grade Pts = {{semesterTranscript.semesterGradePoints}}</div>
-          <div class="col-sm-3 text-center m-auto">SGPA= {{semesterTranscript.SGPA}}</div>
+    </div>
+  </div>
+  <div class="row"
+       *ngFor="let semesterTranscript of this.completeTranscript.semestersTranscript;">
+    <div class="col-sm-12">
+      <div class="card">
+        <div class="card-header"><b>Semester-{{semesterTranscript.semesterNo}}</b></div>
+        <table class="table m-0 table-bordered">
+          <thead class="bg-light">
+          <tr>
+            <th>Course-Code</th>
+            <th>Course-Title</th>
+            <th>Credit-Hour</th>
+            <th>Grade-Pts</th>
+            <th>Grade</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr
+            *ngFor="let subjectTranscript of this.semesterTranscript.semesterSubjects;">
+            <td scope="row">{{subjectTranscript.courseCode}}</td>
+            <td>{{subjectTranscript.courseTitle}}</td>
+            <td>{{subjectTranscript.creditHour}}</td>
+            <td>{{subjectTranscript.gradePoints}}</td>
+            <td>{{subjectTranscript.grade}}</td>
+          </tr>
+          </tbody>
+        </table>
+        <div class="card-footer">
+          <div class="row pb-2">
+            <div class="col-sm-3 text-center m-auto">Cr.Hr. For GPA = {{semesterTranscript.creditHoursForCGPA}}</div>
+            <div class="col-sm-3 text-center m-auto">Grade Pts = {{semesterTranscript.semesterGradePoints}}</div>
+            <div class="col-sm-3 text-center m-auto">SGPA= {{semesterTranscript.SGPA}}</div>
+          </div>
         </div>
       </div>
+      <br>
+      <br>
     </div>
-    <br>
-    <br>
   </div>
 </div>

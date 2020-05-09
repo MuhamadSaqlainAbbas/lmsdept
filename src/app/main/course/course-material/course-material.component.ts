@@ -3,9 +3,10 @@ import * as fromApp from '../../../store/app.reducers';
 import {Store} from '@ngrx/store';
 import {CourseMaterialModal} from './course-material.modal';
 import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 import {saveAs} from 'file-saver';
 import {map} from 'rxjs/operators';
+import {CoursesSelectedCourseService} from '../courses-selected-course.service';
 
 @Component({
   selector: 'app-course-material',
@@ -16,14 +17,27 @@ export class CourseMaterialComponent implements OnInit {
   public courseMaterial: CourseMaterialModal[] = [];
   private filePath: string;
   private fileName: string;
+  private selectedCourseSubscription: Subscription;
+
   constructor(private store: Store<fromApp.AppState>,
-              private http: HttpClient) {
+              private http: HttpClient,
+              private selectedCourseService: CoursesSelectedCourseService) {
     this.fileName = 'login page.txt.txt';
     this.filePath = `C:\\Users\\Saqlain abbas\\source\\repos\\LMS-API\\LMS-API\\Files\\assignments\\dcb5-c821\\login page.txt`;
   }
 
   ngOnInit() {
     // here we are getting the course materials for the course code
+
+    // Added By Yousaf this would listen to course Change and Call API
+    this.selectedCourseSubscription = this.selectedCourseService.getCourse().subscribe(
+      course => {
+        this.fetchCourseMaterial();
+      }
+    );
+  }
+
+  private fetchCourseMaterial() {
     this.http.get<any>('http://localhost:12345/api/CourseMaterials/CourseMaterialsBySubCode?',
       {
         params: {
@@ -36,6 +50,7 @@ export class CourseMaterialComponent implements OnInit {
       })
       .pipe().subscribe(
       s => {
+        // tslint:disable-next-line:forin
         for (const index in s) {
           this.courseMaterial[index] = new CourseMaterialModal(s[index].CM_TITLE, s[index].FILENAME, s[index].FILEPATH);
           console.log(this.courseMaterial);

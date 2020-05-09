@@ -4,6 +4,7 @@ import {Store} from '@ngrx/store';
 import {TimeTableModal} from './time-table.modal';
 import {TimeTableDay} from './time-table-day.modal';
 import {TimeTableServices} from './time-table-services/time-table-services.service';
+import {SlideInFromLeft} from '../../transitions';
 
 enum DaysOfWeeks {
   monday = 'monday',
@@ -25,7 +26,10 @@ interface TimeTableData {
 @Component({
   selector: 'app-time-table',
   templateUrl: './time-table.component.html',
-  styleUrls: ['./time-table.component.css']
+  styleUrls: ['./time-table.component.css'],
+  animations: [
+    SlideInFromLeft()
+  ]
 })
 export class TimeTableComponent implements OnInit {
 

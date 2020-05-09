@@ -5,11 +5,15 @@ import {SemesterPreviousCoursesModal} from './semester-previous-courses.modal';
 import {Router} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
 import {PreviousCourseModal} from './previous-course.modal';
+import {SlideInFromLeft} from '../../transitions';
 
 @Component({
   selector: 'app-previous-courses',
   templateUrl: './previous-courses.component.html',
-  styleUrls: ['./previous-courses.component.css']
+  styleUrls: ['./previous-courses.component.css'],
+  animations: [
+    SlideInFromLeft()
+  ]
 })
 export class PreviousCoursesComponent implements OnInit {
   public semesterPreviousCourses: SemesterPreviousCoursesModal[];

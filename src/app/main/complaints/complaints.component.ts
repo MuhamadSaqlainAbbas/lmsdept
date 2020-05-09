@@ -4,13 +4,17 @@ import {Store} from '@ngrx/store';
 import * as fromApp from '../../store/app.reducers';
 import {ComplaintModel} from './complaint.model';
 import * as fromComplaintActions from './store/complaints.component.actions';
+import {SlideInFromLeft} from '../../transitions';
 
 declare var $: any;
 
 @Component({
   selector: 'app-complaints',
   templateUrl: './complaints.component.html',
-  styleUrls: ['./complaints.component.css']
+  styleUrls: ['./complaints.component.css'],
+  animations: [
+    SlideInFromLeft()
+  ]
 })
 export class ComplaintsComponent implements OnInit {
   show = false;

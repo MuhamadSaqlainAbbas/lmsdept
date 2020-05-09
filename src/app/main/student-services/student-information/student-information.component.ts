@@ -1,19 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 import {StudentInformationModel} from './student-information.model';
 import * as fromApp from '../../../store/app.reducers';
-import * as fromStudentServicesActions from '../store/student-services.actions';
 import {Store} from '@ngrx/store';
+import {SlideInFromLeft} from '../../../transitions';
 
 @Component({
   selector: 'app-student-information',
   templateUrl: './student-information.component.html',
-  styleUrls: ['./student-information.component.css']
+  styleUrls: ['./student-information.component.css'],
+  animations: [
+    SlideInFromLeft()
+  ]
 })
 export class StudentInformationComponent implements OnInit {
   public studentInformation: StudentInformationModel;
   constructor(private store: Store<fromApp.AppState>) { }
   ngOnInit(): void {
-    var obj = JSON.parse(localStorage.getItem('currentUser'));
+    const obj = JSON.parse(localStorage.getItem('currentUser'));
     this.studentInformation = new StudentInformationModel();
     this.studentInformation.registrationNo = obj.REG_NO;
     this.studentInformation.studentName = obj.NM;

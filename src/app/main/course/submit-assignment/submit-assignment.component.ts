@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import * as fromApp from '../../../store/app.reducers';
 import {Store} from '@ngrx/store';
 import {SubmitAssignmentModal} from './submit-assignment.modal';
@@ -13,8 +13,10 @@ import {CourseMaterialModal} from '../course-material/course-material.modal';
 export class SubmitAssignmentComponent implements OnInit {
   public assignments: SubmitAssignmentModal[] = [];
   myFiles: string[] = [];
+
   constructor(private store: Store<fromApp.AppState>,
-              private httpService: HttpClient) { }
+              private httpService: HttpClient) {
+  }
 
   ngOnInit() {
     // api call to get the list of the course assignments
@@ -30,6 +32,7 @@ export class SubmitAssignmentComponent implements OnInit {
       })
       .pipe().subscribe(
       s => {
+        // tslint:disable-next-line:forin
         for (const index in s) {
           this.assignments[index] = new SubmitAssignmentModal();
           this.assignments[index].assignmentName = s[index].ASSIGNMENT_TITLE;
@@ -47,12 +50,14 @@ export class SubmitAssignmentComponent implements OnInit {
       }
     );
   }
+
   getFileDetails(e) {
     // tslint:disable-next-line:prefer-for-of
     for (let i = 0; i < e.target.files.length; i++) {
       this.myFiles.push(e.target.files[i]);
     }
   }
+
   uploadFiles() {
     // tslint:disable-next-line:variable-name
     const _uploadFolderId = this.getUniqueId(2);
@@ -67,6 +72,7 @@ export class SubmitAssignmentComponent implements OnInit {
     this.httpService.post('http://localhost:12345/api/upload/UploadFiles?uploadFolderId=' + _uploadFolderId + '&userId=' + _userId + '', frmData).subscribe(
     );
   }
+
   getUniqueId(parts: number) {
     const stringArr = [];
     for (let i = 0; i < parts; i++) {
@@ -77,4 +83,7 @@ export class SubmitAssignmentComponent implements OnInit {
     return stringArr.join('-');
   }
 
+  OnAssignmentClicked(assignment: SubmitAssignmentModal) {
+    console.log('Got the Assignment', assignment);
+  }
 }

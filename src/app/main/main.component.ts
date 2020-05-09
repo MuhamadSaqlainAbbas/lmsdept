@@ -4,16 +4,21 @@ import * as fromApp from './../store/app.reducers';
 import {Store} from '@ngrx/store';
 import {CourseModal} from './course/course.modal';
 import {AppComponentEventEmitterService} from './event-emmiter.service';
-import { User } from '../auth/_models/user';
-import { AuthenticationService } from '../auth/_services/authentication.service';
+import {User} from '../auth/_models';
+import {AuthenticationService} from '../auth/_services';
 import {HttpClient} from '@angular/common/http';
+import {FadeIn} from '../transitions';
+import {CoursesSelectedCourseService} from './course/courses-selected-course.service';
 
 declare var $: any;
 
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
-  styleUrls: ['./main.component.css']
+  styleUrls: ['./main.component.css'],
+  animations: [
+    FadeIn()
+  ]
 })
 export class MainComponent implements OnInit {
   public studentName: string;
@@ -26,7 +31,7 @@ export class MainComponent implements OnInit {
 
 
   IsUserLoggedIn = false;
-  public semesterCourses: CourseModal[] = [];
+  public semesterCourses: CourseModal[] = [new CourseModal('English', 'CS-101'), new CourseModal('Urdu', 'CS-111')];
   showResetForm = false;
 
 
@@ -35,7 +40,8 @@ export class MainComponent implements OnInit {
               private route: ActivatedRoute,
               private clickEvent: AppComponentEventEmitterService,
               private authenticationService: AuthenticationService,
-              private http: HttpClient) {
+              private http: HttpClient,
+              private selectedCourse: CoursesSelectedCourseService) {
     this.currentUser = this.authenticationService.currentUserValue;
   }
 
@@ -76,10 +82,11 @@ export class MainComponent implements OnInit {
   }
 
   OnCourseClicked(element: HTMLLIElement) {
-    console.log(element.value);
-    console.log(this.semesterCourses[element.value]);
-    localStorage.setItem('selectedCourse', JSON.stringify(this.semesterCourses[element.value]));
-    console.log(localStorage.getItem('selectedCourse'));
+    this.selectedCourse.announceSelectedCourse(this.semesterCourses[element.value]);
+    // console.log(element.value);
+    // console.log(this.semesterCourses[element.value]);
+    // localStorage.setItem('selectedCourse', JSON.stringify(this.semesterCourses[element.value]));
+    // console.log(localStorage.getItem('selectedCourse'));
     this.router.navigate(['course'], {relativeTo: this.route});
   }
 
@@ -137,6 +144,7 @@ export class MainComponent implements OnInit {
       buttonContent.classList.add('header-mobile-open');
     }
   }
+
   ngOnInit(): void {
     // here are the values of the student for the header
     this.studentName = JSON.parse(localStorage.getItem('currentUser')).NM;
@@ -145,17 +153,22 @@ export class MainComponent implements OnInit {
 
 
     this.http.get<any>('http://localhost:12345/api/EnrollCourses/ListOfEnrollCourses?',
-      { params: { YEAR: JSON.parse(localStorage.getItem('currentUser')).YEAR,
-                          C_CODE: JSON.parse(localStorage.getItem('currentUser')).C_CODE,
-                          D_ID: JSON.parse(localStorage.getItem('currentUser')).D_ID,
-                          MAJ_ID: JSON.parse(localStorage.getItem('currentUser')).MAJ_ID,
-                          RN: JSON.parse(localStorage.getItem('currentUser')).RN }})
-      .pipe().subscribe(
-        s => {
-          for (const index in s) {
-            this.semesterCourses[index] = new CourseModal(s[index].SUB_NM, s[index].SUB_CODE);
-          }
+      {
+        params: {
+          YEAR: JSON.parse(localStorage.getItem('currentUser')).YEAR,
+          C_CODE: JSON.parse(localStorage.getItem('currentUser')).C_CODE,
+          D_ID: JSON.parse(localStorage.getItem('currentUser')).D_ID,
+          MAJ_ID: JSON.parse(localStorage.getItem('currentUser')).MAJ_ID,
+          RN: JSON.parse(localStorage.getItem('currentUser')).RN
         }
+      })
+      .pipe().subscribe(
+      s => {
+        // tslint:disable-next-line:forin
+        for (const index in s) {
+          this.semesterCourses[index] = new CourseModal(s[index].SUB_NM, s[index].SUB_CODE);
+        }
+      }
     );
     // here we are requesting the api for the courses response
     // tslint:disable-next-line:max-line-length
@@ -198,6 +211,7 @@ export class MainComponent implements OnInit {
   onShowResetForm() {
     this.showResetForm = true;
   }
+
   onLogout() {
     this.authenticationService.logout();
     this.router.navigate(['/auth']);
