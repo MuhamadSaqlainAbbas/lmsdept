@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import * as fromApp from '../../../store/app.reducers';
 import {Store} from '@ngrx/store';
 import {CourseMaterialModal} from './course-material.modal';
@@ -17,7 +17,9 @@ import {SlideInFromLeft} from '../../../transitions';
     SlideInFromLeft()
   ]
 })
-export class CourseMaterialComponent implements OnInit {
+export class CourseMaterialComponent implements OnInit, OnDestroy {
+
+
   public courseMaterial: CourseMaterialModal[] = [];
   private selectedCourseSubscription: Subscription;
 
@@ -123,7 +125,12 @@ export class CourseMaterialComponent implements OnInit {
         })
       );
   }
+
   OnCourseMaterialClicked(courseMaterial: CourseMaterialModal) {
     this.DownLoadFiles(courseMaterial.filePath, courseMaterial.fileName);
+  }
+
+  ngOnDestroy(): void {
+    this.selectedCourseSubscription.unsubscribe();
   }
 }

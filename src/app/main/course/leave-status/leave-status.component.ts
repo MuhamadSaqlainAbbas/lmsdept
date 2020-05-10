@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import * as fromApp from '../../../store/app.reducers';
 import {Store} from '@ngrx/store';
 import {LeaveStatusModal} from './leave-status.modal';
 import {AbsentteeModal} from './absenttee.modal';
 import {HttpClient} from '@angular/common/http';
 import {SlideInFromLeft} from '../../../transitions';
+import {CoursesSelectedCourseService} from '../courses-selected-course.service';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-leave-status',
@@ -14,23 +16,45 @@ import {SlideInFromLeft} from '../../../transitions';
     SlideInFromLeft()
   ]
 })
-export class LeaveStatusComponent implements OnInit {
+export class LeaveStatusComponent implements OnInit, OnDestroy {
   public absenttee: AbsentteeModal[] = [];
   public leaveStatus: LeaveStatusModal;
   public present: string;
   public absent: string;
+  private selectedCourseSub: Subscription;
+
   constructor(private store: Store<fromApp.AppState>,
-              private http: HttpClient) { }
+              private http: HttpClient,
+              private selectedCourseService: CoursesSelectedCourseService) {
+  }
 
   ngOnInit() {
     // fetching the dates of the absenttees from the web
+
+    this.selectedCourseSub = this.selectedCourseService.getCourse().subscribe(
+      course => {
+        this.fetchData();
+      }
+    );
+    this.store.select('fromCourse').subscribe(
+      state => {
+        state.leaveStatus = this.leaveStatus;
+      }
+    );
+  }
+
+  private fetchData() {
     this.http.get<any>('http://localhost:12345/api/CourseAbsenttee/CourseAbsentteeBySubCode?',
-      { params: { YEAR: JSON.parse(localStorage.getItem('currentUser')).YEAR,
+      {
+        params: {
+          YEAR: JSON.parse(localStorage.getItem('currentUser')).YEAR,
           D_ID: JSON.parse(localStorage.getItem('currentUser')).D_ID,
           MAJ_ID: JSON.parse(localStorage.getItem('currentUser')).MAJ_ID,
           C_CODE: JSON.parse(localStorage.getItem('currentUser')).C_CODE,
           RN: JSON.parse(localStorage.getItem('currentUser')).RN,
-          SUB_CODE: JSON.parse(localStorage.getItem('selectedCourse')).courseCode}})
+          SUB_CODE: JSON.parse(localStorage.getItem('selectedCourse')).courseCode
+        }
+      })
       .pipe().subscribe(
       s => {
         // tslint:disable-next-line:forin
@@ -41,11 +65,15 @@ export class LeaveStatusComponent implements OnInit {
     );
 
     this.http.get<any>('http://localhost:12345/api/CourseAttendance/CourseAttendanceBySubCode?',
-      { params: { YEAR: JSON.parse(localStorage.getItem('currentUser')).YEAR,
+      {
+        params: {
+          YEAR: JSON.parse(localStorage.getItem('currentUser')).YEAR,
           D_ID: JSON.parse(localStorage.getItem('currentUser')).D_ID,
           MAJ_ID: JSON.parse(localStorage.getItem('currentUser')).MAJ_ID,
           C_CODE: JSON.parse(localStorage.getItem('currentUser')).C_CODE,
-          RN: JSON.parse(localStorage.getItem('currentUser')).RN}})
+          RN: JSON.parse(localStorage.getItem('currentUser')).RN
+        }
+      })
       .pipe().subscribe(
       s => {
         for (const index in s) {
@@ -57,10 +85,9 @@ export class LeaveStatusComponent implements OnInit {
         }
       }
     );
-    this.store.select('fromCourse').subscribe(
-      state => {
-        state.leaveStatus = this.leaveStatus;
-      }
-    );
+  }
+
+  ngOnDestroy(): void {
+    this.selectedCourseSub.unsubscribe();
   }
 }

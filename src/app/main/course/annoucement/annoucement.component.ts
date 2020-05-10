@@ -1,10 +1,12 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import * as fromApp from '../../../store/app.reducers';
 import {Store} from '@ngrx/store';
 import {AppComponentEventEmitterService} from '../../event-emmiter.service';
 import {AnnouncementModal} from '../../home/announcement.modal';
 import {HttpClient} from '@angular/common/http';
 import {SlideInFromLeft} from '../../../transitions';
+import {CoursesSelectedCourseService} from '../courses-selected-course.service';
+import {Subscription} from 'rxjs';
 
 declare var $: any;
 
@@ -16,30 +18,24 @@ declare var $: any;
     SlideInFromLeft()
   ]
 })
-export class AnnoucementComponent implements OnInit {
+export class AnnoucementComponent implements OnInit, OnDestroy {
 
   announcements: AnnouncementModal[];
+  private selectedCourseSubs: Subscription;
   constructor(private clickEvent: AppComponentEventEmitterService,
               private store: Store<fromApp.AppState>,
-              private http: HttpClient) {
+              private http: HttpClient,
+              private selectedCourse: CoursesSelectedCourseService) {
   }
 
   ngOnInit() {
     // to get the section of the selected course
-    this.http.get<any>('http://localhost:12345/api/Section/GetSectionThroughSubCode?',
-      {
-        params: {
-          YEAR: JSON.parse(localStorage.getItem('currentUser')).YEAR,
-          C_CODE: JSON.parse(localStorage.getItem('currentUser')).C_CODE,
-          D_ID: JSON.parse(localStorage.getItem('currentUser')).D_ID,
-          MAJ_ID: JSON.parse(localStorage.getItem('currentUser')).MAJ_ID,
-          RN: JSON.parse(localStorage.getItem('currentUser')).RN,
-          SUB_CODE: JSON.parse(localStorage.getItem('selectedCourse')).courseCode
-        }
-      })
-      .pipe().subscribe(
-      s => {
-        localStorage.setItem('section', s[0].SECTION);
+
+
+
+    this.selectedCourseSubs = this.selectedCourse.getCourse().subscribe(
+      course => {
+        this.fetchData();
       }
     );
     this.store.select('fromCourse').subscribe(
@@ -84,5 +80,28 @@ export class AnnoucementComponent implements OnInit {
     });
 
 
+  }
+
+  private fetchData() {
+    this.http.get<any>('http://localhost:12345/api/Section/GetSectionThroughSubCode?',
+      {
+        params: {
+          YEAR: JSON.parse(localStorage.getItem('currentUser')).YEAR,
+          C_CODE: JSON.parse(localStorage.getItem('currentUser')).C_CODE,
+          D_ID: JSON.parse(localStorage.getItem('currentUser')).D_ID,
+          MAJ_ID: JSON.parse(localStorage.getItem('currentUser')).MAJ_ID,
+          RN: JSON.parse(localStorage.getItem('currentUser')).RN,
+          SUB_CODE: JSON.parse(localStorage.getItem('selectedCourse')).courseCode
+        }
+      })
+      .pipe().subscribe(
+      s => {
+        localStorage.setItem('section', s[0].SECTION);
+      }
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.selectedCourseSubs.unsubscribe();
   }
 }

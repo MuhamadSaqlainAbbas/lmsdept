@@ -1,12 +1,13 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import * as fromApp from '../../../store/app.reducers';
 import {Store} from '@ngrx/store';
 import {SubmitAssignmentModal} from './submit-assignment.modal';
 import {HttpClient} from '@angular/common/http';
 import {SlideInFromLeft} from '../../../transitions';
-import {Observable} from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {saveAs} from 'file-saver';
+import {CoursesSelectedCourseService} from '../courses-selected-course.service';
 
 
 @Component({
@@ -17,16 +18,32 @@ import {saveAs} from 'file-saver';
     SlideInFromLeft()
   ]
 })
-export class SubmitAssignmentComponent implements OnInit {
+export class SubmitAssignmentComponent implements OnInit, OnDestroy {
   public assignments: SubmitAssignmentModal[] = [];
   myFiles: string[] = [];
+  private selectedCourseSub: Subscription;
 
   constructor(private store: Store<fromApp.AppState>,
-              private httpService: HttpClient) {
+              private httpService: HttpClient,
+              private selectedCourseService: CoursesSelectedCourseService) {
   }
 
   ngOnInit() {
     // api call to get the list of the course assignments
+    this.selectedCourseSub = this.selectedCourseService.getCourse().subscribe(
+      course => {
+        this.fetchData();
+      }
+    );
+
+    this.store.select('fromCourse').subscribe(
+      state => {
+        state.submitAssigments = this.assignments;
+      }
+    );
+  }
+
+  private fetchData() {
     this.httpService.get<any>('http://localhost:12345/api/CourseAssignments/CourseAssignmentsBySubCode?',
       {
         params: {
@@ -48,12 +65,6 @@ export class SubmitAssignmentComponent implements OnInit {
           this.assignments[index].assignmentDownloadFilename = s[index].FILE_NAME;
           this.assignments[index].assignmentDownloadFilepath = s[index].FILE_PATH;
         }
-      }
-    );
-
-    this.store.select('fromCourse').subscribe(
-      state => {
-        state.submitAssigments = this.assignments;
       }
     );
   }
@@ -150,5 +161,9 @@ export class SubmitAssignmentComponent implements OnInit {
           return new Blob([res.body]);
         })
       );
+  }
+
+  ngOnDestroy(): void {
+    this.selectedCourseSub.unsubscribe();
   }
 }
