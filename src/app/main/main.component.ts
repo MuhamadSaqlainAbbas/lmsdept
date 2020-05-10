@@ -85,8 +85,8 @@ export class MainComponent implements OnInit {
     this.selectedCourse.announceSelectedCourse(this.semesterCourses[element.value]);
     // console.log(element.value);
     // console.log(this.semesterCourses[element.value]);
-    // localStorage.setItem('selectedCourse', JSON.stringify(this.semesterCourses[element.value]));
-    // console.log(localStorage.getItem('selectedCourse'));
+    localStorage.setItem('selectedCourse', JSON.stringify(this.semesterCourses[element.value]));
+    console.log(localStorage.getItem('selectedCourse'));
     this.router.navigate(['course'], {relativeTo: this.route});
   }
 

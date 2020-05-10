@@ -4,6 +4,10 @@ import {Store} from '@ngrx/store';
 import {SubmitAssignmentModal} from './submit-assignment.modal';
 import {HttpClient} from '@angular/common/http';
 import {SlideInFromLeft} from '../../../transitions';
+import {Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
+import {saveAs} from 'file-saver';
+
 
 @Component({
   selector: 'app-submit-assignment',
@@ -65,7 +69,7 @@ export class SubmitAssignmentComponent implements OnInit {
     // tslint:disable-next-line:variable-name
     const _uploadFolderId = this.getUniqueId(2);
     // tslint:disable-next-line:variable-name
-    const _userId = 2;
+    const _userId = 1;
     const frmData = new FormData();
     // tslint:disable-next-line:prefer-for-of
     for (let i = 0; i < this.myFiles.length; i++) {
@@ -87,6 +91,64 @@ export class SubmitAssignmentComponent implements OnInit {
   }
 
   OnAssignmentClicked(assignment: SubmitAssignmentModal) {
-    console.log('Got the Assignment', assignment);
+    this.DownLoadFiles(assignment.assignmentDownloadFilepath, assignment.assignmentDownloadFilename);
+  }
+  // for the downloading of the assignments
+  DownLoadFiles(filePath: string, fileName: string) {
+    // file type extension
+    const checkFileType = fileName.split('.').pop();
+    let fileType;
+    if (checkFileType === '.txt') {
+      fileType = 'text/plain';
+    }
+    if (checkFileType === '.pdf') {
+      fileType = 'application/pdf';
+    }
+    if (checkFileType === '.doc') {
+      fileType = 'application/vnd.ms-word';
+    }
+    if (checkFileType === '.docx') {
+      fileType = 'application/vnd.ms-word';
+    }
+    if (checkFileType === '.xls') {
+      fileType = 'application/vnd.ms-excel';
+    }
+    if (checkFileType === '.png') {
+      fileType = 'image/png';
+    }
+    if (checkFileType === '.jpg') {
+      fileType = 'image/jpeg';
+    }
+    if (checkFileType === '.jpeg') {
+      fileType = 'image/jpeg';
+    }
+    if (checkFileType === '.gif') {
+      fileType = 'image/gif';
+    }
+    if (checkFileType === '.csv') {
+      fileType = 'text/csv';
+    }
+    this.DownloadFile(filePath)
+      .subscribe(
+        success => {
+          saveAs(success, fileName);
+        },
+        err => {
+          alert('Server error while downloading file.');
+        }
+      );
+  }
+
+  DownloadFile(filePath: string): Observable<any> {
+    return this.httpService.post('http://localhost:12345/api/Download/DownloadFile?filePath=' + filePath, '',
+      {
+        responseType: 'blob',
+        observe: 'response'
+      })
+      .pipe(
+        map((res: any) => {
+          return new Blob([res.body]);
+        })
+      );
   }
 }

@@ -19,20 +19,14 @@ import {SlideInFromLeft} from '../../../transitions';
 })
 export class CourseMaterialComponent implements OnInit {
   public courseMaterial: CourseMaterialModal[] = [];
-  private filePath: string;
-  private fileName: string;
   private selectedCourseSubscription: Subscription;
 
   constructor(private store: Store<fromApp.AppState>,
               private http: HttpClient,
               private selectedCourseService: CoursesSelectedCourseService) {
-    this.fileName = 'login page.txt.txt';
-    this.filePath = `C:\\Users\\Saqlain abbas\\source\\repos\\LMS-API\\LMS-API\\Files\\assignments\\dcb5-c821\\login page.txt`;
   }
 
   ngOnInit() {
-    // here we are getting the course materials for the course code
-
     // Added By Yousaf this would listen to course Change and Call API
     this.selectedCourseSubscription = this.selectedCourseService.getCourse().subscribe(
       course => {
@@ -42,6 +36,7 @@ export class CourseMaterialComponent implements OnInit {
   }
 
   private fetchCourseMaterial() {
+    // here we are getting the course materials for the course code
     this.http.get<any>('http://localhost:12345/api/CourseMaterials/CourseMaterialsBySubCode?',
       {
         params: {
@@ -68,12 +63,12 @@ export class CourseMaterialComponent implements OnInit {
     );
   }
 
-  DownLoadFiles(downloadFile: HTMLButtonElement) {
+  DownLoadFiles(filePath: string, fileName: string) {
 
     // Added By:Yousaf to get relative file path
-    const filePath = downloadFile.value;
+    // const filePath = downloadFile.value;
     // file type extension
-    const checkFileType = this.fileName.split('.').pop();
+    const checkFileType = fileName.split('.').pop();
     let fileType;
     if (checkFileType === '.txt') {
       fileType = 'text/plain';
@@ -105,10 +100,10 @@ export class CourseMaterialComponent implements OnInit {
     if (checkFileType === '.csv') {
       fileType = 'text/csv';
     }
-    this.DownloadFile(this.filePath)
+    this.DownloadFile(filePath)
       .subscribe(
         success => {
-          saveAs(success, this.fileName);
+          saveAs(success, fileName);
         },
         err => {
           alert('Server error while downloading file.');
@@ -127,5 +122,8 @@ export class CourseMaterialComponent implements OnInit {
           return new Blob([res.body]);
         })
       );
+  }
+  OnCourseMaterialClicked(courseMaterial: CourseMaterialModal) {
+    this.DownLoadFiles(courseMaterial.filePath, courseMaterial.fileName);
   }
 }

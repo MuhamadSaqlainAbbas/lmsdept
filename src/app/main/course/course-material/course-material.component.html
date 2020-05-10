@@ -16,7 +16,9 @@
             <td>{{courseMaterial.courseMaterilTitle}}</td>
             <td class="text-center">
 <!--              Added by Yousaf to get file path on relative download button click-->
-              <button class="download" #downloadFile value="{{courseMaterial.fileName}}" (click)="DownLoadFiles(downloadFile)"><i class="fa fa-download"></i></button>
+<!--              <button class="download" #downloadFile value="{{courseMaterial.fileName}}" (click)="DownLoadFiles(downloadFile)">-->
+              <button class="download" #downloadFile value="{{courseMaterial.fileName}}" (click)="OnCourseMaterialClicked(courseMaterial)">
+                <i class="fa fa-download"></i></button>
             </td>
           </tr>
           </tbody>
