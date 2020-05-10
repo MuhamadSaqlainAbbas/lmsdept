@@ -8,6 +8,7 @@ import {Observable, Subscription} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {saveAs} from 'file-saver';
 import {CoursesSelectedCourseService} from '../courses-selected-course.service';
+import {compileComponentFromMetadata} from '@angular/compiler';
 
 
 @Component({
@@ -75,7 +76,10 @@ export class SubmitAssignmentComponent implements OnInit, OnDestroy {
       this.myFiles.push(e.target.files[i]);
     }
   }
-
+  OnUploadClicked(assignment: SubmitAssignmentModal) {
+    this.uploadFiles();
+    console.log(this.myFiles);
+  }
   uploadFiles() {
     // tslint:disable-next-line:variable-name
     const _uploadFolderId = this.getUniqueId(2);
@@ -86,9 +90,10 @@ export class SubmitAssignmentComponent implements OnInit, OnDestroy {
     for (let i = 0; i < this.myFiles.length; i++) {
       frmData.append('fileUpload', this.myFiles[i]);
     }
+    console.log(frmData);
     // tslint:disable-next-line:max-line-length
-    this.httpService.post('http://localhost:12345/api/upload/UploadFiles?uploadFolderId=' + _uploadFolderId + '&userId=' + _userId + '', frmData).subscribe(
-    );
+    this.httpService.post('http://localhost:12345/api/upload/UploadFiles?uploadFolderId=' + _uploadFolderId +
+      '&userId=' + _userId + '', frmData).subscribe();
   }
 
   getUniqueId(parts: number) {
