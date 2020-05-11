@@ -31,8 +31,12 @@ export class FileuploadComponent implements OnInit {
         frmData.append('fileUpload', this.myFiles[i]);
       }
     // tslint:disable-next-line:max-line-length
-      this.httpService.post('http://localhost:12345/api/upload/UploadFiles?uploadFolderId=' + _uploadFolderId + '&userId=' + _userId + '', frmData).subscribe(
-      );
+      this.httpService.post('http://localhost:12345/api/upload/UploadFiles?uploadFolderId=' + _uploadFolderId + '&userId=' + _userId + '', frmData)
+        .subscribe(
+      s => {
+        console.log(s);
+      }
+        );
     }
 
 
