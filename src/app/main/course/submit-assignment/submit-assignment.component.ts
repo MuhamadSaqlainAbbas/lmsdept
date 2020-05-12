@@ -8,6 +8,7 @@ import {Observable, Subscription} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {saveAs} from 'file-saver';
 import {CoursesSelectedCourseService} from '../courses-selected-course.service';
+import {compileComponentFromMetadata} from '@angular/compiler';
 
 
 @Component({
@@ -21,6 +22,7 @@ import {CoursesSelectedCourseService} from '../courses-selected-course.service';
 export class SubmitAssignmentComponent implements OnInit, OnDestroy {
   public assignments: SubmitAssignmentModal[] = [];
   myFiles: string[] = [];
+  public filePath: string;
   private selectedCourseSub: Subscription;
 
   constructor(private store: Store<fromApp.AppState>,
@@ -75,8 +77,7 @@ export class SubmitAssignmentComponent implements OnInit, OnDestroy {
       this.myFiles.push(e.target.files[i]);
     }
   }
-
-  uploadFiles() {
+  uploadFiles(assignment: SubmitAssignmentModal) {
     // tslint:disable-next-line:variable-name
     const _uploadFolderId = this.getUniqueId(2);
     // tslint:disable-next-line:variable-name
@@ -87,7 +88,28 @@ export class SubmitAssignmentComponent implements OnInit, OnDestroy {
       frmData.append('fileUpload', this.myFiles[i]);
     }
     // tslint:disable-next-line:max-line-length
-    this.httpService.post('http://localhost:12345/api/upload/UploadFiles?uploadFolderId=' + _uploadFolderId + '&userId=' + _userId + '', frmData).subscribe(
+    this.httpService.post('http://localhost:12345/api/upload/UploadFiles?uploadFolderId=' + _uploadFolderId +
+      '&userId=' + _userId + '', frmData).subscribe(
+        s => {
+            // here we are passing the assignment to submitted assignment
+          this.httpService.get<any>('http://localhost:12345/api/UploadAssignment/UploadAssignmentbyFileId?',
+            {
+              params: {
+                YEAR: JSON.parse(localStorage.getItem('currentUser')).YEAR,
+                C_CODE: JSON.parse(localStorage.getItem('currentUser')).C_CODE,
+                D_ID: JSON.parse(localStorage.getItem('currentUser')).D_ID,
+                MAJ_ID: JSON.parse(localStorage.getItem('currentUser')).MAJ_ID,
+                RN: JSON.parse(localStorage.getItem('currentUser')).RN,
+                ASS_TITLE: assignment.assignmentName,
+                FILE: s[0].FILE_ID
+              }
+            })
+            .pipe().subscribe(
+            m => {
+              console.log('success');
+            }
+          );
+        }
     );
   }
 
