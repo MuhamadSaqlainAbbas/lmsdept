@@ -33,6 +33,7 @@ export class MainComponent implements OnInit {
   IsUserLoggedIn = false;
   public semesterCourses: CourseModal[] = [new CourseModal('English', 'CS-101'), new CourseModal('Urdu', 'CS-111')];
   showResetForm = false;
+  showChangePassword = false;
 
 
   constructor(private router: Router,
@@ -217,4 +218,11 @@ export class MainComponent implements OnInit {
     this.router.navigate(['/auth']);
   }
 
+  OnChangePasswordClicked() {
+    this.showChangePassword = true;
+  }
+
+  onCloseChangePasswordForm() {
+    this.showChangePassword = false;
+  }
 }

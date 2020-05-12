@@ -18,6 +18,7 @@ import {AutoCloseDirective} from './auto.close.directive';
 import {AppComponentEventEmitterService} from './event-emmiter.service';
 import {ChartsModule} from 'ng2-charts';
 import {FormsModule} from '@angular/forms';
+import {ChangePasswordComponent} from "./change-password/change-password.component";
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import {FormsModule} from '@angular/forms';
     CompleteTranscriptComponent,
     SemesterTranscriptComponent,
     DateSheetComponent,
-    AutoCloseDirective
+    AutoCloseDirective,
+    ChangePasswordComponent
   ],
   imports: [
     CommonModule,
