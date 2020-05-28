@@ -5,6 +5,7 @@ import {GradeBookModal} from './grade-book.modal';
 import {GradeTypeModal} from './grade-type.modal';
 import {HttpClient} from '@angular/common/http';
 import {SlideInFromLeft} from '../../../transitions';
+import {baseUrl} from '../../change-password/password.service';
 
 @Component({
   selector: 'app-grade-book',
@@ -30,7 +31,7 @@ export class GradeBookComponent implements OnInit {
 
   ngOnInit() {
     // for the assignment marks submiitted by the student
-    this.http.get<any>('http://localhost:12345/api/CourseAssignmentResult/CourseAssignmentResultByRollNo?',
+    this.http.get<any>(`${baseUrl}/api/CourseAssignmentResult/CourseAssignmentResultByRollNo?`,
       {
         params: {
           year: JSON.parse(localStorage.getItem('currentUser')).YEAR,

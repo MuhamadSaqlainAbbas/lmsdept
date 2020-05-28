@@ -3,6 +3,7 @@ import { HttpClient, HttpRequest, HttpEventType, HttpResponse } from '@angular/c
 import {Observable} from 'rxjs';
 import { saveAs } from 'file-saver';
 import {map} from 'rxjs/operators';
+import {baseUrl} from '../main/change-password/password.service';
 
 @Component({
   selector: 'app-download-file',
@@ -62,7 +63,7 @@ export class DownloadFileComponent implements OnInit {
       );
   }
   DownloadFile(filePath: string): Observable<any> {
-    return this.http.post('http://localhost:12345/api/Download/DownloadFile?filePath=' + filePath , '',
+    return this.http.post(`${baseUrl}/api/Download/DownloadFile?filePath=` + filePath , '',
       { responseType: 'blob',
                 observe: 'response'})
       .pipe(

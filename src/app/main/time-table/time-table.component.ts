@@ -117,48 +117,6 @@ export class TimeTableComponent implements OnInit {
         this.getTimeTableFromJsonData(response);
       }
     );
-    // this.getTimeTableFromJsonData([
-    //   {
-    //     SUB_NM: 'INTRODUCTION TO COMPUTING',
-    //     START_TIME: '12:30:00',
-    //     END_TIME: '2:00:00',
-    //     FM_NAME: 'Muhammad Hafeez',
-    //     R_NAME: 'ROOM 2',
-    //     DAY: 'Monday'
-    //   },
-    //   {
-    //     SUB_NM: 'INTRODUCTION TO COMPUTING',
-    //     START_TIME: '09:30:00',
-    //     END_TIME: '11:00:00',
-    //     FM_NAME: 'Muhammad Hafeez',
-    //     R_NAME: 'ROOM 2',
-    //     DAY: 'Monday'
-    //   },
-    //   {
-    //     SUB_NM: 'INTRODUCTION TO COMPUTING',
-    //     START_TIME: '08:00:00',
-    //     END_TIME: '09:30:00',
-    //     FM_NAME: 'ALI RAZA',
-    //     R_NAME: 'ROOM 1',
-    //     DAY: 'Monday'
-    //   },
-    //   {
-    //     SUB_NM: 'INTRODUCTION TO COMPUTING',
-    //     START_TIME: '08:00:00',
-    //     END_TIME: '09:30:00',
-    //     FM_NAME: 'ALI RAZA',
-    //     R_NAME: 'ROOM 1',
-    //     DAY: 'Tuesday'
-    //   },
-    //   {
-    //     SUB_NM: 'INTRODUCTION TO COMPUTING',
-    //     START_TIME: '12:30:00',
-    //     END_TIME: '02:00:00',
-    //     FM_NAME: 'ALI RAZA',
-    //     R_NAME: 'ROOM 1',
-    //     DAY: 'Wednesday'
-    //   }
-    // ]);
   }
 
   getTimeTableFromJsonData(data) {

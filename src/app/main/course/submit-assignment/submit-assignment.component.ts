@@ -8,7 +8,7 @@ import {Observable, Subscription} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {saveAs} from 'file-saver';
 import {CoursesSelectedCourseService} from '../courses-selected-course.service';
-import {compileComponentFromMetadata} from '@angular/compiler';
+import {baseUrl} from '../../change-password/password.service';
 
 
 @Component({
@@ -46,7 +46,7 @@ export class SubmitAssignmentComponent implements OnInit, OnDestroy {
   }
 
   private fetchData() {
-    this.httpService.get<any>('http://localhost:12345/api/CourseAssignments/CourseAssignmentsBySubCode?',
+    this.httpService.get<any>(`${baseUrl}/api/CourseAssignments/CourseAssignmentsBySubCode?`,
       {
         params: {
           dep_id: JSON.parse(localStorage.getItem('currentUser')).D_ID,

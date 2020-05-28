@@ -6,6 +6,7 @@ import {User} from '../_models';
 import {Store} from '@ngrx/store';
 import * as fromApp from '../../store/app.reducers';
 import {StudentInformationModel} from '../../main/student-services/student-information/student-information.model';
+import {baseUrl} from '../../main/change-password/password.service';
 
 
 @Injectable({ providedIn: 'root' })
@@ -25,7 +26,7 @@ export class AuthenticationService {
     }
 
     login(username: string, password: string) {
-        return this.http.get<any>('http://localhost:12345/api/Authentication/StudentLogin?',
+        return this.http.get<any>(`${baseUrl}/api/Authentication/StudentLogin?`,
           { params: { _username: username, _password: password }})
             .pipe(map(user => {
                 // login successful if there's a jwt token in the response

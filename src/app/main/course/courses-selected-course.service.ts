@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
 import {CourseModal} from './course.modal';
 import {HttpClient} from '@angular/common/http';
+import {baseUrl} from '../change-password/password.service';
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +26,7 @@ export class CoursesSelectedCourseService {
 
 
   getCourseMaterial() {
-    this.http.get<any>('http://localhost:12345/api/CourseMaterials/CourseMaterialsBySubCode?', {
+    this.http.get<any>(`${baseUrl}/api/CourseMaterials/CourseMaterialsBySubCode?`, {
       params: {
         // dep_id: JSON.parse(localStorage.getItem('currentUser')).D_ID,
         //   maj_id: JSON.parse(localStorage.getItem('currentUser')).MAJ_ID,

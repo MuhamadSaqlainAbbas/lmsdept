@@ -9,6 +9,7 @@ import {AuthenticationService} from '../auth/_services';
 import {HttpClient} from '@angular/common/http';
 import {FadeIn} from '../transitions';
 import {CoursesSelectedCourseService} from './course/courses-selected-course.service';
+import {baseUrl} from './change-password/password.service';
 
 declare var $: any;
 
@@ -153,7 +154,7 @@ export class MainComponent implements OnInit {
     this.cgpa = JSON.parse(localStorage.getItem('currentUser')).CGPA;
 
 
-    this.http.get<any>('http://localhost:12345/api/EnrollCourses/ListOfEnrollCourses?',
+    this.http.get<any>(`${baseUrl}/api/EnrollCourses/ListOfEnrollCourses?`,
       {
         params: {
           YEAR: JSON.parse(localStorage.getItem('currentUser')).YEAR,

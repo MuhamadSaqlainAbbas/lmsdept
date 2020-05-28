@@ -7,6 +7,7 @@ import {HttpClient} from '@angular/common/http';
 import {SlideInFromLeft} from '../../../transitions';
 import {CoursesSelectedCourseService} from '../courses-selected-course.service';
 import {Subscription} from 'rxjs';
+import {baseUrl} from '../../change-password/password.service';
 
 @Component({
   selector: 'app-leave-status',
@@ -44,7 +45,7 @@ export class LeaveStatusComponent implements OnInit, OnDestroy {
   }
 
   private fetchData() {
-    this.http.get<any>('http://localhost:12345/api/CourseAbsenttee/CourseAbsentteeBySubCode?',
+    this.http.get<any>(`${baseUrl}/api/CourseAbsenttee/CourseAbsentteeBySubCode?`,
       {
         params: {
           YEAR: JSON.parse(localStorage.getItem('currentUser')).YEAR,
