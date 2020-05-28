@@ -89,7 +89,7 @@ export class HomeComponent implements OnInit {
         this.pieChartData = [this.semesterAttendance[0].presents, this.semesterAttendance[0].absents];
       }
     );
-    this.homeAnnouncementService.getSemesterAnnouncement(2016, 1, 1, 1, 1).subscribe(
+    this.homeAnnouncementService.getSemesterAnnouncement(2019, 1, 52, 11, 1).subscribe(
       response => {
         try {
           // @ts-ignore
@@ -101,7 +101,7 @@ export class HomeComponent implements OnInit {
         }
       }
     );
-    this.homeAnnouncementService.getDepartmentAnnouncement(1, 1, 1).subscribe(
+    this.homeAnnouncementService.getDepartmentAnnouncement(1, 52, 11).subscribe(
       response => {
         try {
           // @ts-ignore
