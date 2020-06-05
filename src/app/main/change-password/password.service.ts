@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 
 
-export const baseUrl = 'https://lms-api20200528193541.azurewebsites.net';
+// export const baseUrl = 'https://lms-api20200528193541.azurewebsites.net';
+export const baseUrl = 'http://localhost:12345/';
 @Injectable({
   providedIn: 'root'
 })

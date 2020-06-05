@@ -46,6 +46,9 @@ export class SubmitAssignmentComponent implements OnInit, OnDestroy {
   }
 
   private fetchData() {
+    console.log(JSON.parse(localStorage.getItem('currentUser')).D_ID);
+    console.log(JSON.parse(localStorage.getItem('currentUser')).MAJ_ID);
+    console.log(JSON.parse(localStorage.getItem('currentUser')).C_CODE);
     this.httpService.get<any>(`${baseUrl}/api/CourseAssignments/CourseAssignmentsBySubCode?`,
       {
         params: {
@@ -88,11 +91,11 @@ export class SubmitAssignmentComponent implements OnInit, OnDestroy {
       frmData.append('fileUpload', this.myFiles[i]);
     }
     // tslint:disable-next-line:max-line-length
-    this.httpService.post('http://localhost:12345/api/upload/UploadFiles?uploadFolderId=' + _uploadFolderId +
+    this.httpService.post(baseUrl + '/api/upload/UploadFiles?uploadFolderId=' + _uploadFolderId +
       '&userId=' + _userId + '', frmData).subscribe(
         s => {
             // here we are passing the assignment to submitted assignment
-          this.httpService.get<any>('http://localhost:12345/api/UploadAssignment/UploadAssignmentbyFileId?',
+          this.httpService.get<any>(baseUrl + '/api/UploadAssignment/UploadAssignmentbyFileId?',
             {
               params: {
                 YEAR: JSON.parse(localStorage.getItem('currentUser')).YEAR,
