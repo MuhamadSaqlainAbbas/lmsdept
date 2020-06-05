@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Store} from '@ngrx/store';
 import * as fromApp from '../../../store/app.reducers';
 import {GradeBookModal} from './grade-book.modal';
@@ -26,8 +26,10 @@ export class GradeBookComponent implements OnInit {
   public assignments: GradeTypeModal[] = [];
   public quizes: GradeTypeModal[] = [];
   public presentations: GradeTypeModal[] = [];
+
   constructor(private store: Store<fromApp.AppState>,
-              private http: HttpClient) { }
+              private http: HttpClient) {
+  }
 
   ngOnInit() {
     // for the assignment marks submiitted by the student
@@ -52,7 +54,7 @@ export class GradeBookComponent implements OnInit {
       }
     );
     // for the result of all the quizes in that specific courses
-    this.http.get<any>('http://localhost:12345/api/CoursePresentationResults/CoursePresentationResultByRollNo?',
+    this.http.get<any>(baseUrl + '/CoursePresentationResults/CoursePresentationResultByRollNo?',
       {
         params: {
           year: JSON.parse(localStorage.getItem('currentUser')).YEAR,
@@ -72,7 +74,7 @@ export class GradeBookComponent implements OnInit {
       }
     );
     // here are for the presentation of the course
-    this.http.get<any>('http://localhost:12345/api/CourseQuizResult/CourseQuizResultByRollNo?',
+    this.http.get<any>(baseUrl + '/CourseQuizResult/CourseQuizResultByRollNo?',
       {
         params: {
           year: JSON.parse(localStorage.getItem('currentUser')).YEAR,
@@ -93,7 +95,7 @@ export class GradeBookComponent implements OnInit {
       }
     );
     // for the final term marks
-    this.http.get<any>('http://localhost:12345/api/FinalTermMarks/FinalTermMarksBySubCode?',
+    this.http.get<any>(baseUrl + '/FinalTermMarks/FinalTermMarksBySubCode?',
       {
         params: {
           year: JSON.parse(localStorage.getItem('currentUser')).YEAR,
@@ -111,8 +113,8 @@ export class GradeBookComponent implements OnInit {
         this.finalTermMarks = new GradeTypeModal('final Term', s[0].MRKS_SS_FINAL, s[0].MAX_MRKS_FINAL);
       }
     );
-      // mid term marks
-    this.http.get<any>('http://localhost:12345/api/MidTermMarks/MidTermMarksBySubCode?',
+    // mid term marks
+    this.http.get<any>(baseUrl + '/api/MidTermMarks/MidTermMarksBySubCode?',
       {
         params: {
           year: JSON.parse(localStorage.getItem('currentUser')).YEAR,

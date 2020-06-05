@@ -9,6 +9,7 @@ import {map} from 'rxjs/operators';
 import {saveAs} from 'file-saver';
 import {CoursesSelectedCourseService} from '../courses-selected-course.service';
 import {baseUrl} from '../../change-password/password.service';
+import {AppComponentEventEmitterService} from '../../event-emmiter.service';
 
 
 @Component({
@@ -27,7 +28,8 @@ export class SubmitAssignmentComponent implements OnInit, OnDestroy {
 
   constructor(private store: Store<fromApp.AppState>,
               private httpService: HttpClient,
-              private selectedCourseService: CoursesSelectedCourseService) {
+              private selectedCourseService: CoursesSelectedCourseService,
+              private clickEvent: AppComponentEventEmitterService) {
   }
 
   ngOnInit() {
@@ -80,6 +82,7 @@ export class SubmitAssignmentComponent implements OnInit, OnDestroy {
       this.myFiles.push(e.target.files[i]);
     }
   }
+
   uploadFiles(assignment: SubmitAssignmentModal) {
     // tslint:disable-next-line:variable-name
     const _uploadFolderId = this.getUniqueId(2);
@@ -90,29 +93,39 @@ export class SubmitAssignmentComponent implements OnInit, OnDestroy {
     for (let i = 0; i < this.myFiles.length; i++) {
       frmData.append('fileUpload', this.myFiles[i]);
     }
+    console.log(JSON.parse(localStorage.getItem('currentUser')));
+    console.log(assignment.assignmentName)
+    // console.log(JSON.parse(localStorage.getItem('currentUser')).MAJ_ID);
+    // console.log(JSON.parse(localStorage.getItem('currentUser')).C_CODE);
     // tslint:disable-next-line:max-line-length
     this.httpService.post(baseUrl + '/api/upload/UploadFiles?uploadFolderId=' + _uploadFolderId +
       '&userId=' + _userId + '', frmData).subscribe(
-        s => {
-            // here we are passing the assignment to submitted assignment
-          this.httpService.get<any>(baseUrl + '/api/UploadAssignment/UploadAssignmentbyFileId?',
-            {
-              params: {
-                YEAR: JSON.parse(localStorage.getItem('currentUser')).YEAR,
-                C_CODE: JSON.parse(localStorage.getItem('currentUser')).C_CODE,
-                D_ID: JSON.parse(localStorage.getItem('currentUser')).D_ID,
-                MAJ_ID: JSON.parse(localStorage.getItem('currentUser')).MAJ_ID,
-                RN: JSON.parse(localStorage.getItem('currentUser')).RN,
-                ASS_TITLE: assignment.assignmentName,
-                FILE: s[0].FILE_ID
-              }
-            })
-            .pipe().subscribe(
-            m => {
-              console.log('success');
+      s => {
+        // here we are passing the assignment to submitted assignment
+        this.httpService.get<any>(baseUrl + '/api/UploadAssignment/UploadAssignmentbyFileId?',
+          {
+            params: {
+              YEAR: JSON.parse(localStorage.getItem('currentUser')).YEAR,
+              C_CODE: JSON.parse(localStorage.getItem('currentUser')).C_CODE,
+              D_ID: JSON.parse(localStorage.getItem('currentUser')).D_ID,
+              MAJ_ID: JSON.parse(localStorage.getItem('currentUser')).MAJ_ID,
+              RN: JSON.parse(localStorage.getItem('currentUser')).RN,
+              ASS_TITLE: assignment.assignmentName,
+              FILE: s[0].FILE_ID
             }
-          );
-        }
+          }).pipe().subscribe(
+          m => {
+            console.log('success');
+            this.clickEvent.message.next(true);
+          },
+          error => {
+            console.log('assignment Submit Errrrr');
+          }
+        );
+      },
+      error => {
+        console.log('fileNot Uploaded Errrrrr');
+      }
     );
   }
 
@@ -129,6 +142,7 @@ export class SubmitAssignmentComponent implements OnInit, OnDestroy {
   OnAssignmentClicked(assignment: SubmitAssignmentModal) {
     this.DownLoadFiles(assignment.assignmentDownloadFilepath, assignment.assignmentDownloadFilename);
   }
+
   // for the downloading of the assignments
   DownLoadFiles(filePath: string, fileName: string) {
     // file type extension
@@ -176,7 +190,7 @@ export class SubmitAssignmentComponent implements OnInit, OnDestroy {
   }
 
   DownloadFile(filePath: string): Observable<any> {
-    return this.httpService.post('http://localhost:12345/api/Download/DownloadFile?filePath=' + filePath, '',
+    return this.httpService.post(baseUrl + '/api/Download/DownloadFile?filePath=' + filePath, '',
       {
         responseType: 'blob',
         observe: 'response'

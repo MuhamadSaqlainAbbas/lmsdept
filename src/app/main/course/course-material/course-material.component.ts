@@ -112,7 +112,7 @@ export class CourseMaterialComponent implements OnInit, OnDestroy {
   }
 
   DownloadFile(filePath: string): Observable<any> {
-    return this.http.post('http://localhost:12345/api/Download/DownloadFile?filePath=' + filePath, '',
+    return this.http.post(baseUrl + '/Download/DownloadFile?filePath=' + filePath, '',
       {
         responseType: 'blob',
         observe: 'response'

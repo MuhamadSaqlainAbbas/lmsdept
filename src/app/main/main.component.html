@@ -295,6 +295,7 @@
     </div>
   </div>
 
+  <app-message-modal *ngIf="showMessage" (close)="onCloseMessage()"></app-message-modal>
   <app-change-password *ngIf="showChangePassword" (close)="onCloseChangePasswordForm()"></app-change-password>
   <app-alert *ngIf="showResetForm" (close)="onCloseResetForm()"></app-alert>
 </div>

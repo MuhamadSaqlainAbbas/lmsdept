@@ -35,6 +35,7 @@ export class MainComponent implements OnInit {
   public semesterCourses: CourseModal[] = [new CourseModal('English', 'CS-101'), new CourseModal('Urdu', 'CS-111')];
   showResetForm = false;
   showChangePassword = false;
+  showMessage: boolean;
 
 
   constructor(private router: Router,
@@ -45,6 +46,7 @@ export class MainComponent implements OnInit {
               private http: HttpClient,
               private selectedCourse: CoursesSelectedCourseService) {
     this.currentUser = this.authenticationService.currentUserValue;
+    this.showMessage = false;
   }
 
   OnStudentInformationClicked() {
@@ -204,6 +206,13 @@ export class MainComponent implements OnInit {
         $('#main-container').removeClass('sidebar-mobile-open');
       }
     });
+
+
+    this.clickEvent.message.subscribe(
+      value => {
+        this.showMessage = true;
+      }
+    )
   }
 
   onCloseResetForm() {
@@ -225,5 +234,9 @@ export class MainComponent implements OnInit {
 
   onCloseChangePasswordForm() {
     this.showChangePassword = false;
+  }
+
+  onCloseMessage() {
+    this.showMessage = false;
   }
 }

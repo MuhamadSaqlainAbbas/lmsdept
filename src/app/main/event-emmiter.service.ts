@@ -6,6 +6,7 @@ export class AppComponentEventEmitterService {
 
   // Observable string sources
   public buttonClicked = new Subject<boolean>();
+  public message = new Subject<boolean>();
 
   // Service message commands
   announceClick(message: boolean) {

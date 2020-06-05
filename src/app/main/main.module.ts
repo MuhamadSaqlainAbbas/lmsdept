@@ -19,6 +19,7 @@ import {AppComponentEventEmitterService} from './event-emmiter.service';
 import {ChartsModule} from 'ng2-charts';
 import {FormsModule} from '@angular/forms';
 import {ChangePasswordComponent} from './change-password/change-password.component';
+import { MessageModalComponent } from './message-modal/message-modal.component';
 
 
 @NgModule({
@@ -36,7 +37,8 @@ import {ChangePasswordComponent} from './change-password/change-password.compone
     SemesterTranscriptComponent,
     DateSheetComponent,
     AutoCloseDirective,
-    ChangePasswordComponent
+    ChangePasswordComponent,
+    MessageModalComponent
   ],
   imports: [
     CommonModule,

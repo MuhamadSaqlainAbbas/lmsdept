@@ -65,7 +65,7 @@ export class LeaveStatusComponent implements OnInit, OnDestroy {
       }
     );
 
-    this.http.get<any>('http://localhost:12345/api/CourseAttendance/CourseAttendanceBySubCode?',
+    this.http.get<any>(baseUrl + '/api/CourseAttendance/CourseAttendanceBySubCode?',
       {
         params: {
           YEAR: JSON.parse(localStorage.getItem('currentUser')).YEAR,
