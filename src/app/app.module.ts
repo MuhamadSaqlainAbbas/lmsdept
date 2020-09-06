@@ -13,13 +13,16 @@ import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import {FileuploadComponent} from './fileupload/fileupload.component';
 import {DownloadFileComponent} from './download-file/download-file.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { TestComponent } from './test/test.component';
+import {ToastrModule} from "ngx-toastr";
 
 @NgModule({
   declarations: [
     AppComponent,
     AuthComponent,
     FileuploadComponent,
-    DownloadFileComponent
+    DownloadFileComponent,
+    TestComponent
   ],
   imports: [
     BrowserModule,
@@ -28,7 +31,8 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     StoreModule.forRoot(fromApp.appReducers),
     ReactiveFormsModule,
     HttpClientModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    ToastrModule.forRoot()
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},

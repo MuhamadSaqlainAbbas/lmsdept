@@ -64,7 +64,9 @@ export class CourseMaterialComponent implements OnInit, OnDestroy {
   }
 
   DownLoadFiles(filePath: string, fileName: string) {
-
+    console.log(fileName + filePath);
+    // filePath = 'D:\\home\\site\\wwwroot\\Files\\assignments\\9086-356a\\56420_jordan-cr.png';
+    // fileName = '56420_jordan-cr.png';
     // Added By:Yousaf to get relative file path
     // const filePath = downloadFile.value;
     // file type extension
@@ -112,7 +114,7 @@ export class CourseMaterialComponent implements OnInit, OnDestroy {
   }
 
   DownloadFile(filePath: string): Observable<any> {
-    return this.http.post(baseUrl + '/Download/DownloadFile?filePath=' + filePath, '',
+    return this.http.post(baseUrl + '/api/Download/DownloadFile?filePath=' + filePath, '',
       {
         responseType: 'blob',
         observe: 'response'

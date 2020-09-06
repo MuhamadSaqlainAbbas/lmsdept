@@ -26,6 +26,8 @@ export class GradeBookComponent implements OnInit {
   public assignments: GradeTypeModal[] = [];
   public quizes: GradeTypeModal[] = [];
   public presentations: GradeTypeModal[] = [];
+  public finalPercent: number;
+  public midsPercent: number;
 
   constructor(private store: Store<fromApp.AppState>,
               private http: HttpClient) {
@@ -54,7 +56,7 @@ export class GradeBookComponent implements OnInit {
       }
     );
     // for the result of all the quizes in that specific courses
-    this.http.get<any>(baseUrl + '/CoursePresentationResults/CoursePresentationResultByRollNo?',
+    /*this.http.get<any>(baseUrl + '/CoursePresentationResults/CoursePresentationResultByRollNo?',
       {
         params: {
           year: JSON.parse(localStorage.getItem('currentUser')).YEAR,
@@ -72,9 +74,9 @@ export class GradeBookComponent implements OnInit {
           this.presentations[index] = new GradeTypeModal(s[index].ASSIGNMENT_TITLE, s[index].ASS_OBT_MRKS, s[index].ASS_TOT_MRKS);
         }
       }
-    );
+    );*/
     // here are for the presentation of the course
-    this.http.get<any>(baseUrl + '/CourseQuizResult/CourseQuizResultByRollNo?',
+    /*this.http.get<any>(baseUrl + '/CourseQuizResult/CourseQuizResultByRollNo?',
       {
         params: {
           year: JSON.parse(localStorage.getItem('currentUser')).YEAR,
@@ -93,9 +95,9 @@ export class GradeBookComponent implements OnInit {
         }
         // console.log(this.quizes);
       }
-    );
+    );*/
     // for the final term marks
-    this.http.get<any>(baseUrl + '/FinalTermMarks/FinalTermMarksBySubCode?',
+    /*this.http.get<any>(baseUrl + '/FinalTermMarks/FinalTermMarksBySubCode?',
       {
         params: {
           year: JSON.parse(localStorage.getItem('currentUser')).YEAR,
@@ -112,9 +114,53 @@ export class GradeBookComponent implements OnInit {
         this.finaltermTotalMarks = s[0].MAX_MRKS_FINAL;
         this.finalTermMarks = new GradeTypeModal('final Term', s[0].MRKS_SS_FINAL, s[0].MAX_MRKS_FINAL);
       }
+    );*/
+    this.http.get(`${baseUrl}/api/FinalTermMarks/FinalTermMarksBySubCode`, {
+        params: {
+          year: JSON.parse(localStorage.getItem('currentUser')).YEAR,
+          d_id: JSON.parse(localStorage.getItem('currentUser')).D_ID,
+          maj_id: JSON.parse(localStorage.getItem('currentUser')).MAJ_ID,
+          c_code: JSON.parse(localStorage.getItem('currentUser')).C_CODE,
+          rn: JSON.parse(localStorage.getItem('currentUser')).RN,
+          sub_code: JSON.parse(localStorage.getItem('selectedCourse')).courseCode
+        }
+      }
+    ).subscribe(
+      res => {
+        console.log(res);
+        this.finaltermObtMarks = res[0].OBTAINED_MARKS;
+        this.finaltermTotalMarks = res[0].T_MARKS;
+        this.finalTermMarks = new GradeTypeModal('final Term', res[0].MRKS_SS_MID, res[0].MAX_MRKS_MID);
+        this.finalPercent = (+this.finaltermObtMarks * 100) / +this.finaltermTotalMarks;
+        this.finalPercent = Math.round(this.finalPercent);
+
+      }
     );
+
+
+
     // mid term marks
-    this.http.get<any>(baseUrl + '/api/MidTermMarks/MidTermMarksBySubCode?',
+    this.http.get(`${baseUrl}/api/MidTermMarks/MidTermMarksBySubCode`, {
+        params: {
+          year: JSON.parse(localStorage.getItem('currentUser')).YEAR,
+          d_id: JSON.parse(localStorage.getItem('currentUser')).D_ID,
+          maj_id: JSON.parse(localStorage.getItem('currentUser')).MAJ_ID,
+          c_code: JSON.parse(localStorage.getItem('currentUser')).C_CODE,
+          rn: JSON.parse(localStorage.getItem('currentUser')).RN,
+          sub_code: JSON.parse(localStorage.getItem('selectedCourse')).courseCode
+        }
+      }
+    ).subscribe(
+      res => {
+        console.log(res);
+        this.midtermObtMarks = res[0].OBTAINED_MARKS;
+        this.midtermTotalMarks = res[0].T_MARKS;
+        this.midTermMarks = new GradeTypeModal('mid Term', res[0].MRKS_SS_MID, res[0].MAX_MRKS_MID);
+        this.midsPercent = (+this.midtermObtMarks * 100) / +this.midtermTotalMarks;
+        this.midsPercent = Math.round(this.midsPercent);
+      }
+    );
+    /*this.http.get<any>(baseUrl + '/api/MidTermMarks/MidTermMarksBySubCode?',
       {
         params: {
           year: JSON.parse(localStorage.getItem('currentUser')).YEAR,
@@ -131,12 +177,12 @@ export class GradeBookComponent implements OnInit {
         this.midtermTotalMarks = s[0].MAX_MRKS_MID;
         this.midTermMarks = new GradeTypeModal('mid Term', s[0].MRKS_SS_MID, s[0].MAX_MRKS_MID);
       }
-    );
-    this.store.select('fromCourse').subscribe(
+    );*/
+    /*this.store.select('fromCourse').subscribe(
       state => {
         // this.gradebook = state.gradeBook;
       }
-    );
+    );*/
   }
 
 }

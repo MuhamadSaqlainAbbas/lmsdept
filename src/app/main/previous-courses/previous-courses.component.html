@@ -6,9 +6,9 @@
     <div class="card-body pt-0">
       <div class="table-responsive">
         <div
-          *ngFor="let previousSemester of this.semesterPreviousCourses;">
+          *ngFor="let semPreviousCourses of this.prevCourses; let i = index;">
           <div class="card-header p-0">
-            Semester-{{previousSemester.semesterNo}}
+            Semester-{{ i + 1}}
           </div>
           <div class="card-body p-0">
             <table class="table table-bordered">
@@ -20,9 +20,9 @@
               </thead>
               <tbody>
               <tr
-                *ngFor="let semesterCourses of previousSemester.semesterCourses;">
-                <td><a (click)="OnCourseClicked()">{{semesterCourses.courseTitle}}</a></td>
-                <td><a (click)="OnCourseClicked()">{{semesterCourses.courseCode}}</a></td>
+                *ngFor="let semesterCourse of semPreviousCourses;">
+                <td><a (click)="OnCourseClicked()">{{semesterCourse.SUB_NM}}</a></td>
+                <td><a (click)="OnCourseClicked()">{{semesterCourse.SUB_CODE}}</a></td>
               </tr>
               </tbody>
             </table>

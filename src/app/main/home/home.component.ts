@@ -8,6 +8,10 @@ import {ProgressReportModal} from './progress-report-modal';
 import {AnnouncementModal} from './announcement.modal';
 import {HomeAnnouncementService} from './home-announcement.service';
 import {SlideInFromLeft} from '../../transitions';
+import {baseUrl} from '../change-password/password.service';
+import {CourseModal} from '../course/course.modal';
+import {HttpClient} from '@angular/common/http';
+import {ToastrService} from 'ngx-toastr';
 
 
 // tslint:disable-next-line:class-name
@@ -36,8 +40,11 @@ export class HomeComponent implements OnInit {
   public semesterAttendance: CourseAttendanceModal[];
   private progressReport: ProgressReportModal;
   public announcements: Array<AnnouncementModal>;
+  public semesterCourses = new Array<CourseModal>();
 
   constructor(private store: Store<fromApp.AppState>,
+              private http: HttpClient,
+              private toastr: ToastrService,
               private homeAnnouncementService: HomeAnnouncementService) {
     // chartInitialization();
     this.announcements = new Array<AnnouncementModal>();
@@ -81,14 +88,62 @@ export class HomeComponent implements OnInit {
   lineChartType = 'line';
 
   ngOnInit(): void {
-    this.store.select('fromHome').subscribe(
+
+    this.http.get<any>(`${baseUrl}/api/EnrollCourses/ListOfEnrollCourses?`,
+      {
+        params: {
+          YEAR: JSON.parse(localStorage.getItem('currentUser')).YEAR,
+          C_CODE: JSON.parse(localStorage.getItem('currentUser')).C_CODE,
+          D_ID: JSON.parse(localStorage.getItem('currentUser')).D_ID,
+          MAJ_ID: JSON.parse(localStorage.getItem('currentUser')).MAJ_ID,
+          RN: JSON.parse(localStorage.getItem('currentUser')).RN
+        }
+      }).subscribe(
+      s => {
+        console.log(s);
+        // tslint:disable-next-line:forin
+        for (const index in s) {
+          console.log(s[index]);
+          this.semesterCourses[index] = new CourseModal(s[index].SUB_NM, s[index].SUB_CODE);
+        }
+
+        const student = JSON.parse(localStorage.getItem('currentUser'));
+        this.http.get(`${baseUrl}/api/StudentAttendance/getStudentAttendanceByCourseCode`, {
+          params: {
+            year: student.YEAR,
+            c_code: student.C_CODE,
+            d_id: student.D_ID,
+            maj_id: student.MAJ_ID,
+            rn: student.RN,
+            sub_code: this.semesterCourses[0].courseCode
+          }
+        }).subscribe(
+          res => {
+            console.log(res[0]);
+            if (res === undefined || res === null) {
+              return;
+            }
+            this.pieChartData = [res[0].PRESENTS, res[0].ABSENTS];
+          }
+        );
+
+
+
+
+
+
+      }
+    );
+
+
+    /*this.store.select('fromHome').subscribe(
       state => {
         this.semesterAttendance = state.semesterAttendance;
         // this.announcements = state.announcements;
         this.lineChartData = [{data: [...state.progressReport.progressData], label: 'Performance'}];
         this.pieChartData = [this.semesterAttendance[0].presents, this.semesterAttendance[0].absents];
       }
-    );
+    );*/
     this.homeAnnouncementService.getSemesterAnnouncement(2019, 1, 52, 11, 1).subscribe(
       response => {
         try {
@@ -117,12 +172,43 @@ export class HomeComponent implements OnInit {
   }
 
   OnChange(event: Event) {
+    // this.toastr.info('Loading Attendance');
     console.log('change');
-    const index: number = +(event.target as HTMLDataElement).value;
-    this.presents = this.semesterAttendance[index].presents;
-    this.absents = this.semesterAttendance[index].absents;
-    this.pieChartData = [this.presents, this.absents];
-    console.log(this.pieChart);
-    console.log('presents', this.presents, 'Absents:', this.absents);
+
+    const subCode: string = (event.target as HTMLDataElement).value;
+    console.log(subCode);
+
+
+    const student = JSON.parse(localStorage.getItem('currentUser'));
+    this.http.get(`${baseUrl}/api/StudentAttendance/getStudentAttendanceByCourseCode`, {
+      params: {
+        year: student.YEAR,
+        c_code: student.C_CODE,
+        d_id: student.D_ID,
+        maj_id: student.MAJ_ID,
+        rn: student.RN,
+        sub_code: subCode
+      }
+    }).subscribe(
+      res => {
+        console.log(res[0]);
+        if (res === undefined || res === null) {
+          return;
+        }
+        this.pieChartData = [res[0].PRESENTS, res[0].ABSENTS];
+        this.toastr.success('Attendance Updated');
+      },
+      error => {
+        console.log(error);
+        this.toastr.error(`Failed to load:${error}`);
+      }
+    );
+
+
+    // this.presents = this.semesterAttendance[index].presents;
+    // this.absents = this.semesterAttendance[index].absents;
+    // console.log(this.pieChart);
+
+    // console.log('presents', this.presents, 'Absents:', this.absents);
   }
 }

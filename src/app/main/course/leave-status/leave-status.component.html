@@ -13,16 +13,16 @@
             </thead>
             <tbody>
             <tr
-              *ngFor="let absenttee of this.absenttee;">
-              <td scope="row">1</td>
-              <td>{{absenttee.date}}</td>
+              *ngFor="let absent of this.absenttee; let i = index">
+              <td scope="row">{{i + 1}}</td>
+              <td>{{absent.DA_DATE.split('T').shift()}}</td>
             </tr>
             </tbody>
           </table>
         </div>
-        <div class="card-footer d-flex justify-content-between ml-1 mr-1">
-          <div>Presents: {{this.present}}</div>
-          <div>Absents: {{this.absent}}</div>
+        <div class="card-footer">
+          <div class="badge badge-primary" style="font-size: 1rem">Presents: {{this.present}}</div>
+          <div class="badge badge-secondary ml-2" style="font-size: 1rem">Absents: {{this.absent}}</div>
         </div>
       </div>
     </div>

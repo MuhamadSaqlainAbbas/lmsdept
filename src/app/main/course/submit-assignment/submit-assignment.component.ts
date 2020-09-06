@@ -63,6 +63,7 @@ export class SubmitAssignmentComponent implements OnInit, OnDestroy {
       })
       .pipe().subscribe(
       s => {
+        console.log(s);
         // tslint:disable-next-line:forin
         for (const index in s) {
           this.assignments[index] = new SubmitAssignmentModal();
@@ -71,6 +72,7 @@ export class SubmitAssignmentComponent implements OnInit, OnDestroy {
           this.assignments[index].dueDate = s[index].DUE_DATE;
           this.assignments[index].assignmentDownloadFilename = s[index].FILE_NAME;
           this.assignments[index].assignmentDownloadFilepath = s[index].FILE_PATH;
+          this.assignments[index].assignmentId = s[index].ASS_ID;
         }
       }
     );
@@ -94,7 +96,7 @@ export class SubmitAssignmentComponent implements OnInit, OnDestroy {
       frmData.append('fileUpload', this.myFiles[i]);
     }
     console.log(JSON.parse(localStorage.getItem('currentUser')));
-    console.log(assignment.assignmentName)
+    console.log(assignment.assignmentName);
     // console.log(JSON.parse(localStorage.getItem('currentUser')).MAJ_ID);
     // console.log(JSON.parse(localStorage.getItem('currentUser')).C_CODE);
     // tslint:disable-next-line:max-line-length
@@ -105,6 +107,7 @@ export class SubmitAssignmentComponent implements OnInit, OnDestroy {
         this.httpService.get<any>(baseUrl + '/api/UploadAssignment/UploadAssignmentbyFileId?',
           {
             params: {
+              ASS_ID: assignment.assignmentId,
               YEAR: JSON.parse(localStorage.getItem('currentUser')).YEAR,
               C_CODE: JSON.parse(localStorage.getItem('currentUser')).C_CODE,
               D_ID: JSON.parse(localStorage.getItem('currentUser')).D_ID,

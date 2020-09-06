@@ -8,7 +8,6 @@ import {SubmitAssignmentModal} from '../submit-assignment/submit-assignment.moda
 import {GradeBookModal} from '../grade-book/grade-book.modal';
 import {GradeTypeModal} from '../grade-book/grade-type.modal';
 import {LeaveStatusModal} from '../leave-status/leave-status.modal';
-import {AbsentteeModal} from '../leave-status/absenttee.modal';
 import {AskQuestionModal} from '../ask-question/ask-question.modal';
 import {AnnouncementModal} from '../../home/announcement.modal';
 

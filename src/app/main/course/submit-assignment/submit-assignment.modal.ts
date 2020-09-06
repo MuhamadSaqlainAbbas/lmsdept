@@ -4,6 +4,8 @@ export class SubmitAssignmentModal {
   public assignmentMarks: string;
   public assignmentDownloadFilepath: string;
   public assignmentDownloadFilename: string;
+  public assignmentId: string;
+
   constructor() {
   }
 }

@@ -1,6 +1,4 @@
-export class AbsentteeModal {
-  public date: string;
-  constructor(date: string) {
-    this.date = date;
-  }
+export interface AbsenteesModel {
+  TOTAL_ABSENTEES: number;
+  DA_DATE: string;
 }

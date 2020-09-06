@@ -42,8 +42,8 @@
             <select class="form-control" name="" id="input_attendence_course"
                     (change)="OnChange($event)">
               <option
-                *ngFor="let courseAttendace of this.semesterAttendance;let i=index"
-                value="{{i}}" >{{courseAttendace.courseTitle}}</option>
+                *ngFor="let courseAttendace of this.semesterCourses;let i=index"
+                value="{{courseAttendace.courseCode}}">{{courseAttendace.courseTitle}}</option>
             </select>
           </div>
           <div class="chart-wrapper">
