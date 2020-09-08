@@ -10,8 +10,7 @@ import {HttpClient} from '@angular/common/http';
 import {FadeIn} from '../transitions';
 import {CoursesSelectedCourseService} from './course/courses-selected-course.service';
 import {baseUrl} from './change-password/password.service';
-import {ConnectionService} from "ng-connection-service";
-import {ToastrService} from "ngx-toastr";
+import {ToastrService} from 'ngx-toastr';
 
 declare var $: any;
 
@@ -46,19 +45,8 @@ export class MainComponent implements OnInit {
               private clickEvent: AppComponentEventEmitterService,
               private authenticationService: AuthenticationService,
               private http: HttpClient,
-              private connectionService: ConnectionService,
               private toastr: ToastrService,
               private selectedCourse: CoursesSelectedCourseService) {
-    this.connectionService.monitor().subscribe(
-      isConnected => {
-        if (isConnected) {
-          // this.router.navigate([]);
-          this.toastr.success('Online Reload Page');
-        } else {
-          this.toastr.error('Offline, Check Internet Connection');
-        }
-      }
-    )
     this.currentUser = this.authenticationService.currentUserValue;
     this.showMessage = false;
   }
