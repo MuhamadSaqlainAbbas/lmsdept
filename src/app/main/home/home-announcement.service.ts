@@ -19,4 +19,8 @@ export class HomeAnnouncementService {
     // tslint:disable-next-line:max-line-length
     return this.http.get(baseUrl + `/api/DepartmentAnnouncements/GetDepartmentAnnouncementForHome?DEP_ID=${depId}&MAJ_ID=${majId}&C_CODE=${courseCode}`);
   }
+
+  getCourseAnnouncement(year: number, depId: number, majId: number, courseCode: number, rn: number, subCode: string) {
+    return this.http.get(`${baseUrl}/api/CourseAnnouncement/getAnnouncementByCourseCode?year=${year}&c_code=${courseCode}&d_id=${depId}&maj_id=${majId}&rn=${rn}&sub_code=${subCode}`);
+  }
 }

@@ -1,6 +1,6 @@
-import {Component, ElementRef, OnChanges, OnInit, ViewChild} from '@angular/core';
-import {ChartType, ChartOptions, ChartDataSets} from 'chart.js';
-import {SingleDataSet, Label, monkeyPatchChartJsLegend, monkeyPatchChartJsTooltip, Color} from 'ng2-charts';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {ChartDataSets, ChartOptions, ChartType} from 'chart.js';
+import {Color, Label} from 'ng2-charts';
 import * as fromApp from '../../store/app.reducers';
 import {CourseAttendanceModal} from './courseAttendance.modal';
 import {Store} from '@ngrx/store';
@@ -21,11 +21,6 @@ interface announcementResponse {
   ANN_DATE: string;
 }
 
-function chartInitialization() {
-  monkeyPatchChartJsTooltip();
-  monkeyPatchChartJsLegend();
-}
-
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -38,18 +33,9 @@ export class HomeComponent implements OnInit {
   @ViewChild('chart') pieChart: ElementRef;
 
   public semesterAttendance: CourseAttendanceModal[];
-  private progressReport: ProgressReportModal;
   public announcements: Array<AnnouncementModal>;
   public semesterCourses = new Array<CourseModal>();
-
-  constructor(private store: Store<fromApp.AppState>,
-              private http: HttpClient,
-              private toastr: ToastrService,
-              private homeAnnouncementService: HomeAnnouncementService) {
-    // chartInitialization();
-    this.announcements = new Array<AnnouncementModal>();
-  }
-
+  public courseAnnouncements = [] as announcementResponse[];
   public pieChartOptions: ChartOptions = {
     responsive: true,
   };
@@ -60,7 +46,6 @@ export class HomeComponent implements OnInit {
   pieChartType: ChartType = 'pie';
   pieChartLegend = true;
   pieChartPlugins = [];
-
   lineChartData: ChartDataSets[] = [
     {data: [3.0, 4.0, 2.5, 3.5, 2.9, 3.1, 3.3, 3.6], label: 'Performance'},
   ];
@@ -86,9 +71,20 @@ export class HomeComponent implements OnInit {
   lineChartLegend = true;
   lineChartPlugins = [];
   lineChartType = 'line';
+  loading = true;
+  attendanceLoading = true;
+  private progressReport: ProgressReportModal;
+
+  constructor(private store: Store<fromApp.AppState>,
+              private http: HttpClient,
+              private toastr: ToastrService,
+              private homeAnnouncementService: HomeAnnouncementService) {
+    // chartInitialization();
+    this.announcements = new Array<AnnouncementModal>();
+  }
 
   ngOnInit(): void {
-
+    const student = JSON.parse(localStorage.getItem('currentUser'));
     this.http.get<any>(`${baseUrl}/api/EnrollCourses/ListOfEnrollCourses?`,
       {
         params: {
@@ -100,14 +96,23 @@ export class HomeComponent implements OnInit {
         }
       }).subscribe(
       s => {
-        console.log(s);
         // tslint:disable-next-line:forin
         for (const index in s) {
           console.log(s[index]);
           this.semesterCourses[index] = new CourseModal(s[index].SUB_NM, s[index].SUB_CODE);
+          // tslint:disable-next-line:max-line-length
+          this.homeAnnouncementService.getCourseAnnouncement(student.YEAR, student.D_ID, student.MAJ_ID, student.C_CODE, student.RN, s[index].SUB_CODE).subscribe(
+            response => {
+              this.loading = false;
+              console.log(response);
+              this.courseAnnouncements = [...this.courseAnnouncements, ...response as announcementResponse[]];
+            },
+            error => {
+              this.toastr.error('Error Showing Course Announcements');
+              this.loading = false;
+            }
+          );
         }
-
-        const student = JSON.parse(localStorage.getItem('currentUser'));
         this.http.get(`${baseUrl}/api/StudentAttendance/getStudentAttendanceByCourseCode`, {
           params: {
             year: student.YEAR,
@@ -119,23 +124,26 @@ export class HomeComponent implements OnInit {
           }
         }).subscribe(
           res => {
+            this.attendanceLoading = false;
             console.log(res[0]);
             if (res === undefined || res === null) {
               return;
             }
             this.pieChartData = [res[0].PRESENTS, res[0].ABSENTS];
+          },
+          error => {
+            if (this.attendanceLoading) {
+              this.toastr.error(`Error fetching attendance (${error})`);
+            }
           }
         );
-
-
-
-
 
 
       }
     );
 
 
+    const std = JSON.parse(localStorage.getItem('currentUser'));
     /*this.store.select('fromHome').subscribe(
       state => {
         this.semesterAttendance = state.semesterAttendance;
@@ -144,7 +152,8 @@ export class HomeComponent implements OnInit {
         this.pieChartData = [this.semesterAttendance[0].presents, this.semesterAttendance[0].absents];
       }
     );*/
-    this.homeAnnouncementService.getSemesterAnnouncement(2019, 1, 52, 11, 1).subscribe(
+
+    this.homeAnnouncementService.getSemesterAnnouncement(std.YEAR, std.D_ID, std.MAJ_ID, std.C_CODE, 0).subscribe(
       response => {
         try {
           // @ts-ignore
@@ -156,7 +165,7 @@ export class HomeComponent implements OnInit {
         }
       }
     );
-    this.homeAnnouncementService.getDepartmentAnnouncement(1, 52, 11).subscribe(
+    this.homeAnnouncementService.getDepartmentAnnouncement(std.D_ID, std.MAJ_ID, std.C_CODE).subscribe(
       response => {
         try {
           // @ts-ignore
@@ -172,7 +181,6 @@ export class HomeComponent implements OnInit {
   }
 
   OnChange(event: Event) {
-    // this.toastr.info('Loading Attendance');
     console.log('change');
 
     const subCode: string = (event.target as HTMLDataElement).value;
@@ -203,12 +211,5 @@ export class HomeComponent implements OnInit {
         this.toastr.error(`Failed to load:${error}`);
       }
     );
-
-
-    // this.presents = this.semesterAttendance[index].presents;
-    // this.absents = this.semesterAttendance[index].absents;
-    // console.log(this.pieChart);
-
-    // console.log('presents', this.presents, 'Absents:', this.absents);
   }
 }

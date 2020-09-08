@@ -1,18 +1,33 @@
 <div [@SlideInFromLeft]>
   <div class="row">
     <div class="col-sm-12">
-      <div class="card shadow">
-        <div class="card-header shadow-sm  d-flex justify-content-between">
-          <div>Announcements</div>
+      <div class="card">
+        <div class="card-header d-flex justify-content-between">
+          <div>
+            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+            Announcements
+          </div>
           <div class="badge badge-pill badge-primary p-2">
             <div class="hide-view">0 new</div>
             <div class="show-view" style="display: none">0-N</div>
           </div>
         </div>
-        <div class="card-body mb-3" style="height: 30rem;overflow: hidden;overflow-y: scroll">
+        <div class="card-body mb-3 custom-height overflow-auto">
 
-          <div class="list-group shadow"
-               *ngFor="let announcement of this.announcements;">
+          <div class="list-group mb-1" *ngFor="let courseAnnouncement of this.courseAnnouncements;">
+            <div class="d-flex justify-content-between">
+              <div class="p-1 bg-primary"></div>
+              <a class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-between">
+                  <h5 class="mb-1">{{this.courseAnnouncement.ANN_TITLE}}</h5>
+                  <small>just now</small>
+                </div>
+                <p class="mb-1">{{this.courseAnnouncement.ANN_DESC}}</p>
+                <small>{{this.courseAnnouncement.ANN_DATE}}</small>
+              </a>
+            </div>
+          </div>
+          <div class="list-group shadow" *ngFor="let announcement of this.announcements;">
             <div class="d-flex justify-content-between">
               <div class="p-1 bg-danger"></div>
               <a href="#" class="list-group-item list-group-item-action">
@@ -33,8 +48,9 @@
 
   <div class="row mt-4 mb-2">
     <div class="col-md-12 col-lg-4">
-      <div class="card shadow">
+      <div class="card">
         <div class="card-header">
+          <span *ngIf="attendanceLoading" class="spinner-border  spinner-border-sm mr-1"></span>
           Overall Attendance Report
         </div>
         <div class="card-body">
@@ -67,7 +83,7 @@
     </div>
 
     <div class="col-md-12 col-lg-8 mt-sm-2 mt-lg-0">
-      <div class="card shadow">
+      <div class="card">
         <div class="card-header">
           Overall Attendance Report
         </div>

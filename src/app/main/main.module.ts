@@ -20,6 +20,7 @@ import {ChartsModule} from 'ng2-charts';
 import {FormsModule} from '@angular/forms';
 import {ChangePasswordComponent} from './change-password/change-password.component';
 import { MessageModalComponent } from './message-modal/message-modal.component';
+import { OrderByPipe } from './shared/order-by.pipe';
 
 
 @NgModule({
@@ -38,7 +39,8 @@ import { MessageModalComponent } from './message-modal/message-modal.component';
     DateSheetComponent,
     AutoCloseDirective,
     ChangePasswordComponent,
-    MessageModalComponent
+    MessageModalComponent,
+    OrderByPipe
   ],
   imports: [
     CommonModule,

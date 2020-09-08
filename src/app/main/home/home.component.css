@@ -33,3 +33,11 @@ tbody.custom-hover > tr:hover {
   color: rgba(13, 27, 62, 0.7);
   font-weight: bold;
 }
+
+div.custom-height{
+  height: 30rem;
+}
+
+.spinner-border{
+  color: blue !important;
+}

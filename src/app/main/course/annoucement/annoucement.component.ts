@@ -7,7 +7,7 @@ import {HttpClient} from '@angular/common/http';
 import {SlideInFromLeft} from '../../../transitions';
 import {CoursesSelectedCourseService} from '../courses-selected-course.service';
 import {Subscription} from 'rxjs';
-import {baseUrl} from '../../change-password/password.service';
+import {baseUrl} from "../../change-password/password.service";
 
 declare var $: any;
 

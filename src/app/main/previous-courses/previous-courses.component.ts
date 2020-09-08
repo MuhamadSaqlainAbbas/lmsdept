@@ -8,6 +8,7 @@ import {PreviousCourseModal} from './previous-course.modal';
 import {SlideInFromLeft} from '../../transitions';
 import {baseUrl} from '../change-password/password.service';
 import * as _ from 'lodash';
+import {ToastrService} from 'ngx-toastr';
 
 export interface PrevCourseModel {
   T_NO: number;
@@ -27,9 +28,11 @@ export class PreviousCoursesComponent implements OnInit {
   public semesterPreviousCourses: SemesterPreviousCoursesModal[];
   public previous: PreviousCourseModal;
   public prevCourses: [PrevCourseModel[]];
+  loading = true;
 
   constructor(private store: Store<fromApp.AppState>,
               private http: HttpClient,
+              private toastr: ToastrService,
               private router: Router) {
   }
 
@@ -47,6 +50,7 @@ export class PreviousCoursesComponent implements OnInit {
     }).subscribe(
       data => {
 
+        this.loading = false;
         const thi = this;
         // @ts-ignore
         const groupBy = key => data.reduce((r, a, i) => {
@@ -60,23 +64,12 @@ export class PreviousCoursesComponent implements OnInit {
         this.prevCourses = groupBy('T_NO') as [PrevCourseModel[]];
         // console.log(this.prevCourses);
 
+      },
+      error => {
+        this.loading = false;
+        this.toastr.error('Error Fetching Data');
       }
     );
-    // tslint:disable-next-line:max-line-length
-    //               private http: HttpClient
-    // const abc = this.http.get('http://localhost:49884/api/Courses/GetStudentPre
-    // viousCourses?year=2016&c_code=1&d_id=1&maj_id=1&rn=1&se_id=1&t_no=1')
-    //   .subscribe(
-    //     s => {
-    //       console.log(s);
-    //
-    //     }
-    //   );
-    /*this.store.select('fromPreviousCourses').subscribe(
-      state => {
-        this.semesterPreviousCourses = state.previousSemesterCourses;
-      }
-    );*/
   }
 
   OnCourseClicked() {

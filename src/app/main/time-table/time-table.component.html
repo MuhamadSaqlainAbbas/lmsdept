@@ -19,9 +19,11 @@
         <th scope="row " class="fix-size">Monday</th>
         <td *ngFor="let d of finalData.timetable[0]">
           <div class="container-fluid text-center pb-2 pt-2" *ngIf="d.isLec">
-            *){{d.FM_NAME}} <br>
-            *){{d.R_NAME}}<br>
-            *){{d.SUB_NM}}
+            <ul class="time-table-column">
+              <li><b>{{d.SUB_NM}}</b></li>
+              <li>{{d.FM_NAME}}</li>
+              <li>{{d.R_NAME}}</li>
+            </ul>
           </div>
         </td>
       </tr>
@@ -29,9 +31,11 @@
         <th scope="row " class="fix-size">Tuesday</th>
         <td *ngFor="let d of finalData.timetable[1]">
           <div class="container-fluid text-center pb-2 pt-2" *ngIf="d.isLec">
-            *){{d.FM_NAME}} <br>
-            *){{d.R_NAME}}<br>
-            *){{d.SUB_NM}}
+            <ul class="time-table-column">
+              <li><b>{{d.SUB_NM}}</b></li>
+              <li>{{d.FM_NAME}}</li>
+              <li>{{d.R_NAME}}</li>
+            </ul>
           </div>
         </td>
 
@@ -40,9 +44,14 @@
         <th scope="row " class="fix-size">Wednesday</th>
         <td *ngFor="let d of finalData.timetable[2]">
           <div class="container-fluid text-center pb-2 pt-2" *ngIf="d.isLec">
-            *){{d.FM_NAME}} <br>
+            <ul class="time-table-column">
+              <li><b>{{d.SUB_NM}}</b></li>
+              <li>{{d.FM_NAME}}</li>
+              <li>{{d.R_NAME}}</li>
+            </ul>
+            <!--*){{d.FM_NAME}} <br>
             *){{d.R_NAME}}<br>
-            *){{d.SUB_NM}}
+            *){{d.SUB_NM}}-->
           </div>
         </td>
 
@@ -51,9 +60,11 @@
         <th scope="row " class="fix-size">Thursday</th>
         <td *ngFor="let d of finalData.timetable[3]">
           <div class="container-fluid text-center pb-2 pt-2" *ngIf="d.isLec">
-            *){{d.FM_NAME}} <br>
-            *){{d.R_NAME}}<br>
-            *){{d.SUB_NM}}
+            <ul class="time-table-column">
+              <li><b>{{d.SUB_NM}}</b></li>
+              <li>{{d.FM_NAME}}</li>
+              <li>{{d.R_NAME}}</li>
+            </ul>
           </div>
         </td>
 
@@ -62,9 +73,11 @@
         <th scope="row " class="fix-size">Friday</th>
         <td *ngFor="let d of finalData.timetable[4]">
           <div class="container-fluid text-center pb-2 pt-2" *ngIf="d.isLec">
-            *){{d.FM_NAME}} <br>
-            *){{d.R_NAME}}<br>
-            *){{d.SUB_NM}}
+            <ul class="time-table-column">
+              <li><b>{{d.SUB_NM}}</b></li>
+              <li>{{d.FM_NAME}}</li>
+              <li>{{d.R_NAME}}</li>
+            </ul>
           </div>
         </td>
       </tr>

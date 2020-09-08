@@ -19,13 +19,20 @@ table.table-bordered > tbody > tr > td > div {
 }
 
 table.table-bordered > tbody > tr{
-  padding: 5px;
-  max-width: 80px;
-  min-width: 80px;
+  /*padding: 5px;*/
+  /*max-width: 80px;*/
+  /*min-width: 80px;*/
 }
 
 @media (max-width: 768px) {
   table.table-bordered {
     font-size: .7rem;
   }
+}
+
+
+.time-table-column{
+  padding: 0 0 0 10px;
+  text-align: left;
+  /*list-style: none;*/
 }

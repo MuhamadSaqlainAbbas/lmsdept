@@ -73,7 +73,7 @@ export class TimeTableComponent implements OnInit {
         // temp Response For testing sort
         const tempResponse: TimeTableData[] = [
           {
-            SUB_NM: 'INTRODUCTION TO COMPUTING',
+            SUB_NM: 'Desgin & Analysis of Algorithm',
             START_TIME: '12:30:00',
             END_TIME: '2:00:00',
             FM_NAME: 'Muhammad Hafeez',
@@ -81,7 +81,7 @@ export class TimeTableComponent implements OnInit {
             DAY: 'Monday'
           },
           {
-            SUB_NM: 'INTRODUCTION TO COMPUTING',
+            SUB_NM: 'Compiler Cons.',
             START_TIME: '09:30:00',
             END_TIME: '11:00:00',
             FM_NAME: 'Muhammad Hafeez',
@@ -89,7 +89,7 @@ export class TimeTableComponent implements OnInit {
             DAY: 'Monday'
           },
           {
-            SUB_NM: 'INTRODUCTION TO COMPUTING',
+            SUB_NM: 'Operating System Lab',
             START_TIME: '08:00:00',
             END_TIME: '09:30:00',
             FM_NAME: 'ALI RAZA',
@@ -97,7 +97,7 @@ export class TimeTableComponent implements OnInit {
             DAY: 'Monday'
           },
           {
-            SUB_NM: 'INTRODUCTION TO COMPUTING',
+            SUB_NM: 'Database Design',
             START_TIME: '08:00:00',
             END_TIME: '09:30:00',
             FM_NAME: 'ALI RAZA',
@@ -105,7 +105,7 @@ export class TimeTableComponent implements OnInit {
             DAY: 'Tuesday'
           },
           {
-            SUB_NM: 'INTRODUCTION TO COMPUTING',
+            SUB_NM: 'Design & Analysis of Algorithms',
             START_TIME: '12:30:00',
             END_TIME: '02:00:00',
             FM_NAME: 'ALI RAZA',
@@ -114,10 +114,11 @@ export class TimeTableComponent implements OnInit {
           }
         ];
 
-        this.getTimeTableFromJsonData(response);
+        this.getTimeTableFromJsonData(tempResponse);
       }
     );
   }
+
 
   getTimeTableFromJsonData(data) {
     for (const entry of data) {
