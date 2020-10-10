@@ -190,98 +190,10 @@
           <ul class="vertical-nav-menu">
             <li class="app-sidebar__heading">Menu</li>
             <li>
-              <a (click)="onHomeClicked()"><i class="metismenu-icon fa fa-home active"></i>Home</a>
-            </li>
-            <li>
               <a (click)="OnTimeTableClicked()">
                 <i class="metismenu-icon fa fa-calendar"></i>
                 Time Table
                 <i class="metismenu-state-icon"></i>
-              </a>
-            </li>
-            <li class="app-sidebar__heading">Student</li>
-            <li tabindex="0" autoCloseItem id="menu-list-1" class="menu-list"
-                (click)="OnShowMenuListItem('menu-list-1')">
-              <a>
-                <i class="metismenu-icon fa fa-user-graduate"></i>
-                Student Service
-                <i class="metismenu-state-icon pe-7s-angle-down fa fa-caret-down"></i>
-              </a>
-              <ul class="mm-collapse">
-                <li>
-                  <a (click)="OnStudentInformationClicked()">
-                    <i class="metismenu-icon">
-                    </i>Student Information
-                  </a>
-                </li>
-                <li>
-                  <a (click)="OnFeeStructureClicked()">
-                    <i class="metismenu-icon">
-                    </i>Fee Structure
-                  </a>
-                </li>
-              </ul>
-            </li>
-            <li tabindex="0" autoCloseItem id="menu-list-2" class="menu-list"
-                (click)="OnShowMenuListItem('menu-list-2')">
-              <a>
-                <i class="metismenu-icon fa fa-paperclip"></i>
-                Examination
-                <i class="metismenu-state-icon pe-7s-angle-down fa fa-caret-down"></i>
-              </a>
-              <ul class="mm-collapse">
-                <li>
-                  <a (click)="OnSemesterTranscriptClicked()">
-                    <i class="metismenu-icon">
-                    </i>Semester Transcript
-                  </a>
-                </li>
-                <li>
-                  <a (click)="OnCompleteTranscriptClicked()">
-                    <i class="metismenu-icon">
-                    </i>Compelete Transcript
-                  </a>
-                </li>
-                <li>
-                  <a (click)="OnDateSheetClicked()">
-                    <i class="metismenu-icon">
-                    </i>Date Sheet
-                  </a>
-                </li>
-              </ul>
-            </li>
-            <li class="app-sidebar__heading">Courses</li>
-            <li tabindex="0" autoCloseItem id="menu-list-3" class="menu-list">
-              <a>
-                <i class="metismenu-icon fa fa-book-open"></i>Semester Courses<i
-                class="metismenu-state-icon pe-7s-angle-down fa fa-caret-down"></i>
-              </a>
-              <ul class="mm-collapse">
-                <li #element *ngFor="let course of this.semesterCourses;let i = index; " value="{{i}}" (click)="OnCourseClicked(element)">
-                    <a>
-                    <i class="metismenu-icon"></i>
-                    {{course.courseTitle}}
-                  </a>
-                </li>
-              </ul>
-            </li>
-            <li (click)="OnPreviousCoursesClicked()">
-              <a>
-                <i class="metismenu-icon fa fa-book-reader "></i>
-                Previous Courses
-              </a>
-            </li>
-            <li class="app-sidebar__heading">Help</li>
-            <li>
-              <a (click)="OnTeacherAssesmentClicked()">
-                <i class="metismenu-icon fa fa-hands-helping">
-                </i>Teacher Assessment
-              </a>
-            </li>
-            <li>
-              <a (click)="OnCompliantClicked()">
-                <i class="metismenu-icon fa fa-envelope">
-                </i>Complaint
               </a>
             </li>
           </ul>

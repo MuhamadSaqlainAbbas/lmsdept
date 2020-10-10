@@ -2,14 +2,11 @@ import {Component, OnChanges, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import * as fromApp from './../store/app.reducers';
 import {Store} from '@ngrx/store';
-import {CourseModal} from './course/course.modal';
 import {AppComponentEventEmitterService} from './event-emmiter.service';
 import {User} from '../auth/_models';
 import {AuthenticationService} from '../auth/_services';
 import {HttpClient} from '@angular/common/http';
 import {FadeIn} from '../transitions';
-import {CoursesSelectedCourseService} from './course/courses-selected-course.service';
-import {baseUrl} from './change-password/password.service';
 import {ToastrService} from 'ngx-toastr';
 
 declare var $: any;
@@ -33,7 +30,6 @@ export class MainComponent implements OnInit {
 
 
   IsUserLoggedIn = false;
-  public semesterCourses: CourseModal[] = [new CourseModal('English', 'CS-101'), new CourseModal('Urdu', 'CS-111')];
   showResetForm = false;
   showChangePassword = false;
   showMessage: boolean;
@@ -45,61 +41,15 @@ export class MainComponent implements OnInit {
               private clickEvent: AppComponentEventEmitterService,
               private authenticationService: AuthenticationService,
               private http: HttpClient,
-              private toastr: ToastrService,
-              private selectedCourse: CoursesSelectedCourseService) {
+              private toastr: ToastrService) {
     this.currentUser = this.authenticationService.currentUserValue;
     this.showMessage = false;
   }
 
-  OnStudentInformationClicked() {
-    this.router.navigate(['studentInformation'], {relativeTo: this.route});
-  }
-
-  onHomeClicked() {
-    this.router.navigate(['home'], {relativeTo: this.route});
-  }
-
-  OnFeeStructureClicked() {
-    this.router.navigate(['feeStructure'], {relativeTo: this.route});
-  }
-
-  OnSemesterTranscriptClicked() {
-    this.router.navigate(['semesterTranscript'], {relativeTo: this.route});
-  }
-
-  OnCompleteTranscriptClicked() {
-    this.router.navigate(['completeTranscript'], {relativeTo: this.route});
-  }
-
-  OnDateSheetClicked() {
-    this.router.navigate(['dateSheet'], {relativeTo: this.route});
-  }
-
-  OnTeacherAssesmentClicked() {
-    this.router.navigate(['teacherAssessment'], {relativeTo: this.route});
-  }
-
-  OnCompliantClicked() {
-    this.router.navigate(['complaints'], {relativeTo: this.route});
-  }
 
   OnTimeTableClicked() {
     this.router.navigate(['timeTable'], {relativeTo: this.route});
   }
-
-  OnCourseClicked(element: HTMLLIElement) {
-    this.selectedCourse.announceSelectedCourse(this.semesterCourses[element.value]);
-    // console.log(element.value);
-    // console.log(this.semesterCourses[element.value]);
-    localStorage.setItem('selectedCourse', JSON.stringify(this.semesterCourses[element.value]));
-    console.log(localStorage.getItem('selectedCourse'));
-    this.router.navigate(['course'], {relativeTo: this.route});
-  }
-
-  OnPreviousCoursesClicked() {
-    this.router.navigate(['previousCourses'], {relativeTo: this.route});
-  }
-
   OnShowMenuListItem(id: string) {
     /*const menu = document.getElementById(id);
     const ul = menu.getElementsByTagName('ul')[0];
@@ -152,47 +102,6 @@ export class MainComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // here are the values of the student for the header
-    this.studentName = JSON.parse(localStorage.getItem('currentUser')).NM;
-    this.rollNumber = JSON.parse(localStorage.getItem('currentUser')).ROLNO;
-    this.cgpa = JSON.parse(localStorage.getItem('currentUser')).CGPA;
-
-
-    this.http.get<any>(`${baseUrl}/api/EnrollCourses/ListOfEnrollCourses?`,
-      {
-        params: {
-          YEAR: JSON.parse(localStorage.getItem('currentUser')).YEAR,
-          C_CODE: JSON.parse(localStorage.getItem('currentUser')).C_CODE,
-          D_ID: JSON.parse(localStorage.getItem('currentUser')).D_ID,
-          MAJ_ID: JSON.parse(localStorage.getItem('currentUser')).MAJ_ID,
-          RN: JSON.parse(localStorage.getItem('currentUser')).RN
-        }
-      })
-      .pipe().subscribe(
-      s => {
-        // tslint:disable-next-line:forin
-        for (const index in s) {
-          this.semesterCourses[index] = new CourseModal(s[index].SUB_NM, s[index].SUB_CODE);
-        }
-      }
-    );
-    // here we are requesting the api for the courses response
-    // tslint:disable-next-line:max-line-length
-    // this.http.get('http://localhost:12345/api/EnrollCourses/ListOfEnrollCourses?YEAR=2016&C_CODE=1&D_ID=1&MAJ_ID=1&RN=1')
-    //   .subscribe(
-    //     s => {
-    //       for (const index in s) {
-    //         this.semesterCourses[index] = new CourseModal(s[index].SUB_NM, s[index].SUB_CODE);
-    //     }
-    //     }
-    //   );
-    // here we are assigning the courses to the store so that we can use it from other components
-    this.store.select('fromCourse').subscribe(
-      state => {
-        state.semesterCourses = this.semesterCourses;
-        // this.semesterCourses = state.semesterCourses;
-      }
-    );
     // from the role based authentiction
     this.loading = true;
 
@@ -214,7 +123,7 @@ export class MainComponent implements OnInit {
       value => {
         this.showMessage = true;
       }
-    )
+    );
   }
 
   onCloseResetForm() {

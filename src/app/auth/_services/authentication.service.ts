@@ -5,7 +5,6 @@ import {map} from 'rxjs/operators';
 import {User} from '../_models';
 import {Store} from '@ngrx/store';
 import * as fromApp from '../../store/app.reducers';
-import {StudentInformationModel} from '../../main/student-services/student-information/student-information.model';
 import {baseUrl} from '../../main/change-password/password.service';
 
 
@@ -13,8 +12,6 @@ import {baseUrl} from '../../main/change-password/password.service';
 export class AuthenticationService {
   private currentUserSubject: BehaviorSubject<User>;
   public currentUser: Observable<User>;
-  public studentInfo: StudentInformationModel;
-
   constructor(private http: HttpClient,
               private store: Store<fromApp.AppState>) {
     this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));

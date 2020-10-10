@@ -13,7 +13,6 @@ import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import {FileuploadComponent} from './fileupload/fileupload.component';
 import {DownloadFileComponent} from './download-file/download-file.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import { TestComponent } from './test/test.component';
 import {ToastrModule} from "ngx-toastr";
 
 @NgModule({
@@ -21,8 +20,7 @@ import {ToastrModule} from "ngx-toastr";
     AppComponent,
     AuthComponent,
     FileuploadComponent,
-    DownloadFileComponent,
-    TestComponent
+    DownloadFileComponent
   ],
   imports: [
     BrowserModule,
