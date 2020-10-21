@@ -36,3 +36,7 @@ table.table-bordered > tbody > tr{
   text-align: left;
   /*list-style: none;*/
 }
+
+button {
+  outline: none;
+}

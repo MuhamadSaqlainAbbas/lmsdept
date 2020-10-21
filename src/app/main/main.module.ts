@@ -12,6 +12,10 @@ import {FormsModule} from '@angular/forms';
 import {ChangePasswordComponent} from './change-password/change-password.component';
 import { MessageModalComponent } from './message-modal/message-modal.component';
 import { OrderByPipe } from './shared/order-by.pipe';
+import {MatCardModule} from '@angular/material/card';
+import {MatButtonModule} from '@angular/material/button';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
 
 
 @NgModule({
@@ -22,13 +26,17 @@ import { OrderByPipe } from './shared/order-by.pipe';
     AutoCloseDirective,
     ChangePasswordComponent,
     MessageModalComponent,
-    OrderByPipe
+    OrderByPipe,
   ],
   imports: [
     CommonModule,
     MainRoutingModule,
     ChartsModule,
-    FormsModule
+    FormsModule,
+    MatCardModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
   ],
   providers: [AppComponentEventEmitterService]
 })

@@ -1,3 +1,74 @@
+<mat-card>
+  <mat-card-title class="p-3">
+    Time-Table Management
+  </mat-card-title>
+
+  <mat-card-content class="p-3">
+
+    <div class="row">
+      <div class="col-md-5 col-sm-12">
+        <mat-form-field class="w-100 example-full-width">
+          <mat-label>Teacher ID</mat-label>
+          <input [(ngModel)]="teacherID" matInput placeholder="0-0-0" >
+        </mat-form-field>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-5 col-sm-12">
+        <mat-form-field class="w-100" appearance="fill">
+          <mat-label>Courses</mat-label>
+          <select matNativeControl required>
+            <option value="CS-1234">Web-Eng</option>
+            <option value="CS-1235">H_C_I</option>
+            <option value="CS-1236">OOD</option>
+          </select>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-5 col-sm-12">
+        <mat-form-field class="w-100" appearance="fill">
+          <mat-label>Section</mat-label>
+          <select matNativeControl required>
+            <option value="A">A</option>
+            <option value="B">B</option>
+            <option value="C">C</option>
+          </select>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-5 col-sm-12">
+        <mat-form-field class="w-100" appearance="fill">
+          <mat-label>Start Time</mat-label>
+          <select matNativeControl required>
+            <option value="9:00">9:00</option>
+            <option value="11:00">11:00</option>
+            <option value="1:00">1:00</option>
+          </select>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-5 col-sm-12">
+        <mat-form-field class="w-100" appearance="fill">
+          <mat-label>Room</mat-label>
+          <select matNativeControl required>
+            <option value="123">Room-1</option>
+            <option value="123">Room-2</option>
+          </select>
+        </mat-form-field>
+      </div>
+    </div>
+
+  </mat-card-content>
+
+  <mat-card-actions class="p-3" align="end">
+    <button (click)="onCreateClass()" mat-raised-button color="primary">Add</button>
+  </mat-card-actions>
+</mat-card>
+<!--
 <div class="main-card mb-3 card" [@SlideInFromLeft]>
   <div class="card-body" style="overflow: hidden; overflow-x: scroll"><h5 class="card-title">Time
     Table</h5>
@@ -49,9 +120,9 @@
               <li>{{d.FM_NAME}}</li>
               <li>{{d.R_NAME}}</li>
             </ul>
-            <!--*){{d.FM_NAME}} <br>
+            &lt;!&ndash;*){{d.FM_NAME}} <br>
             *){{d.R_NAME}}<br>
-            *){{d.SUB_NM}}-->
+            *){{d.SUB_NM}}&ndash;&gt;
           </div>
         </td>
 
@@ -85,3 +156,4 @@
     </table>
   </div>
 </div>
+-->

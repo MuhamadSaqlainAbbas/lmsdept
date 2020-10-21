@@ -5,6 +5,7 @@ import {TimeTableModal} from './time-table.modal';
 import {TimeTableDay} from './time-table-day.modal';
 import {TimeTableServices} from './time-table-services/time-table-services.service';
 import {SlideInFromLeft} from '../../transitions';
+import {ToastrService} from 'ngx-toastr';
 
 enum DaysOfWeeks {
   monday = 'monday',
@@ -38,9 +39,10 @@ export class TimeTableComponent implements OnInit {
   weekDays: Array<Array<TimeTableData>>;
 
   public timetableData: TimeTableModal;
+  teacherID: string = '';
 
-  constructor(private store: Store<fromApp.AppState>, private timetableService: TimeTableServices) {
-    this.weekDays = new Array<Array<TimeTableData>>(5);
+  constructor(private store: Store<fromApp.AppState>, private timetableService: TimeTableServices, private toastr: ToastrService) {
+   /* this.weekDays = new Array<Array<TimeTableData>>(5);
     // tslint:disable-next-line:prefer-for-of
     for (let i = 0; i < this.weekDays.length; i++) {
       this.weekDays[i] = new Array<TimeTableDay>();
@@ -57,17 +59,11 @@ export class TimeTableComponent implements OnInit {
       for (let j = 0; j < this.finalData.timetable[i].length; j++) {
         this.finalData.timetable[i][j] = new TimeTableDay(false, '', '', '', '', '', '');
       }
-    }
+    }*/
   }
 
   ngOnInit() {
-    this.store.select('fromTimeTable').subscribe(
-      state => {
-        this.timetableData = state.timetable;
-      }
-    );
-
-    this.timetableService.getStudentTimeTable(2016, 1, 1, 1, 1).subscribe(
+    /*this.timetableService.getStudentTimeTable(2016, 1, 1, 1, 1).subscribe(
       response => {
         console.log(response);
         // temp Response For testing sort
@@ -116,7 +112,7 @@ export class TimeTableComponent implements OnInit {
 
         this.getTimeTableFromJsonData(tempResponse);
       }
-    );
+    );*/
   }
 
 
@@ -191,5 +187,17 @@ export class TimeTableComponent implements OnInit {
     for (const day of this.finalData.timetable[0]) {
       console.log(day.START_TIME);
     }
+  }
+
+  onCreateClass() {
+    if (!this.teacherID) {
+      this.toastr.error('Fields are empty');
+      return;
+    }
+    this.toastr.info('Creating');
+    setTimeout(
+      () => {
+        this.toastr.success('Class Created');
+      }, 2000);
   }
 }
