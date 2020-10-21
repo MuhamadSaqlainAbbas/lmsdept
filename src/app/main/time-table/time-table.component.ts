@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import * as fromApp from '../../store/app.reducers';
 import {Store} from '@ngrx/store';
 import {TimeTableModal} from './time-table.modal';
@@ -6,6 +6,10 @@ import {TimeTableDay} from './time-table-day.modal';
 import {TimeTableServices} from './time-table-services/time-table-services.service';
 import {SlideInFromLeft} from '../../transitions';
 import {ToastrService} from 'ngx-toastr';
+import {HttpClient} from '@angular/common/http';
+import {baseUrl} from '../change-password/password.service';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {ChangeDetection} from '@angular/cli/lib/config/schema';
 
 enum DaysOfWeeks {
   monday = 'monday',
@@ -34,85 +38,95 @@ interface TimeTableData {
 })
 export class TimeTableComponent implements OnInit {
 
+  selectedTerm = '0';
+
+  constructor(private store: Store<fromApp.AppState>,
+              private timetableService: TimeTableServices,
+              private toastr: ToastrService, private http: HttpClient,
+              private cdr: ChangeDetectorRef,
+              private fb: FormBuilder) {
+
+    this.getCourses(this.selectedTerm).subscribe(
+      value => {
+        if (value) {
+          this.courses = value as [];
+          console.log(value);
+          console.log(this.courses);
+        }
+      }
+    );
+
+    this.getSections().subscribe(
+      value => {
+        console.log(value);
+        this.sections = value as [];
+      }
+    );
+
+    this.getRooms().subscribe(
+      value => {
+        console.log(value);
+        this.rooms = value as [];
+      }
+    );
+
+    this.getTeachers().subscribe(
+      value => {
+        console.log(value);
+        this.teachers = value as [];
+      }
+    );
+  }
+
+  courses = [];
+  rooms = [];
+  sections = [];
+
   private day: string;
   finalData: TimeTableModal;
   weekDays: Array<Array<TimeTableData>>;
 
   public timetableData: TimeTableModal;
-  teacherID: string = '';
+  teacherID = '';
+  teachers = [];
+  createForm: FormGroup;
 
-  constructor(private store: Store<fromApp.AppState>, private timetableService: TimeTableServices, private toastr: ToastrService) {
-   /* this.weekDays = new Array<Array<TimeTableData>>(5);
-    // tslint:disable-next-line:prefer-for-of
-    for (let i = 0; i < this.weekDays.length; i++) {
-      this.weekDays[i] = new Array<TimeTableDay>();
-    }
-    this.finalData = new TimeTableModal([
-      new Array<TimeTableDay>(7),
-      new Array<TimeTableDay>(7),
-      new Array<TimeTableDay>(7),
-      new Array<TimeTableDay>(7),
-      new Array<TimeTableDay>(7)
-    ]);
-    // tslint:disable-next-line:prefer-for-of
-    for (let i = 0; i < this.finalData.timetable.length; i++) {
-      for (let j = 0; j < this.finalData.timetable[i].length; j++) {
-        this.finalData.timetable[i][j] = new TimeTableDay(false, '', '', '', '', '', '');
-      }
-    }*/
+  // tslint:disable-next-line:max-line-length
+
+  private getCourses(selectedTerm: string) {
+    return this.http.get(`${baseUrl}/api/GetDepartmentSubjectname/GetSubjects/?t_no=${selectedTerm}&c_code=${11}`);
   }
 
-  ngOnInit() {
-    /*this.timetableService.getStudentTimeTable(2016, 1, 1, 1, 1).subscribe(
-      response => {
-        console.log(response);
-        // temp Response For testing sort
-        const tempResponse: TimeTableData[] = [
-          {
-            SUB_NM: 'Desgin & Analysis of Algorithm',
-            START_TIME: '12:30:00',
-            END_TIME: '2:00:00',
-            FM_NAME: 'Muhammad Hafeez',
-            R_NAME: 'ROOM 2',
-            DAY: 'Monday'
-          },
-          {
-            SUB_NM: 'Compiler Cons.',
-            START_TIME: '09:30:00',
-            END_TIME: '11:00:00',
-            FM_NAME: 'Muhammad Hafeez',
-            R_NAME: 'ROOM 2',
-            DAY: 'Monday'
-          },
-          {
-            SUB_NM: 'Operating System Lab',
-            START_TIME: '08:00:00',
-            END_TIME: '09:30:00',
-            FM_NAME: 'ALI RAZA',
-            R_NAME: 'ROOM 1',
-            DAY: 'Monday'
-          },
-          {
-            SUB_NM: 'Database Design',
-            START_TIME: '08:00:00',
-            END_TIME: '09:30:00',
-            FM_NAME: 'ALI RAZA',
-            R_NAME: 'ROOM 1',
-            DAY: 'Tuesday'
-          },
-          {
-            SUB_NM: 'Design & Analysis of Algorithms',
-            START_TIME: '12:30:00',
-            END_TIME: '02:00:00',
-            FM_NAME: 'ALI RAZA',
-            R_NAME: 'ROOM 1',
-            DAY: 'Wednesday'
-          }
-        ];
+  private getSections() {
+    return this.http.get(`${baseUrl}/api/GetSectionForDepartment/GetSections/?c_code=${11}`);
+  }
 
-        this.getTimeTableFromJsonData(tempResponse);
-      }
-    );*/
+  private getRooms() {
+    return this.http.get(`${baseUrl}/api/GetDepartmentRooms/GetRoomsForDepartment`);
+  }
+
+  private getTeachers() {
+    return this.http.get(`${baseUrl}/api/GetTeacherForDepartment/GetTeachers?c_code=${11}`);
+  }
+
+  // tslint:disable-next-line:max-line-length
+  private createEntry(cCode: number, day: string, fmName: string, roomName: string, sec: string, subName: string, tNo: number, MrEv: string, startTime: string, endTime: string, logID: number) {
+    // tslint:disable-next-line:max-line-length
+    return this.http.get(`${baseUrl}/api/InsertDepartmentTimetable/insertTimetable/?c_code=${cCode}&day=${day}&fm_nm=${fmName}&r_nm=${roomName}&section=${sec}&sub_nm=${subName}&t_no=${tNo}&me=${MrEv}&start_time=${startTime}&end_time=${endTime}&log_id=${logID}`);
+  }
+
+
+  ngOnInit() {
+    this.createForm = this.fb.group({
+      teacher: ['', Validators.required],
+      section: ['', Validators.required],
+      course: ['', Validators.required],
+      room: ['', Validators.required],
+      st_time: ['', Validators.required],
+      day: ['', Validators.required],
+      term: ['0', Validators.required],
+      mrev: ['', Validators.required],
+    });
   }
 
 
@@ -190,14 +204,42 @@ export class TimeTableComponent implements OnInit {
   }
 
   onCreateClass() {
-    if (!this.teacherID) {
+    if (this.createForm.invalid) {
       this.toastr.error('Fields are empty');
       return;
     }
+
+    console.log(this.createForm.value);
+    const teacher = this.createForm.controls.teacher.value;
+    const section = this.createForm.controls.section.value;
+    const course = this.createForm.controls.course.value;
+    const room = this.createForm.controls.room.value;
+    const stTime = this.createForm.controls.st_time.value;
+    const day = this.createForm.controls.day.value;
+    const term = this.createForm.controls.term.value;
+    const mrev = this.createForm.controls.mrev.value;
+
+
     this.toastr.info('Creating');
-    setTimeout(
-      () => {
-        this.toastr.success('Class Created');
-      }, 2000);
+
+    this.createEntry(11, day, teacher, room, section, course, +this.selectedTerm, mrev, stTime, '00:00:00', 1).subscribe(
+      value => {
+        this.toastr.success('Created');
+      },
+      error => {
+        this.toastr.error('Error');
+      }
+    );
+  }
+
+  onTermChange() {
+    console.log(this.selectedTerm);
+    this.getCourses(this.selectedTerm).subscribe(
+      value => {
+        console.log(value);
+        this.courses = value as [];
+        this.cdr.detectChanges();
+      }
+    );
   }
 }

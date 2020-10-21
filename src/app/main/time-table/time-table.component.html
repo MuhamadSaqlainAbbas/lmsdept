@@ -5,62 +5,119 @@
 
   <mat-card-content class="p-3">
 
-    <div class="row">
+    <!--<div class="row">
       <div class="col-md-5 col-sm-12">
         <mat-form-field class="w-100 example-full-width">
           <mat-label>Teacher ID</mat-label>
           <input [(ngModel)]="teacherID" matInput placeholder="0-0-0" >
         </mat-form-field>
       </div>
+
     </div>
-    <br>
-    <div class="row">
-      <div class="col-md-5 col-sm-12">
-        <mat-form-field class="w-100" appearance="fill">
-          <mat-label>Courses</mat-label>
-          <select matNativeControl required>
-            <option value="CS-1234">Web-Eng</option>
-            <option value="CS-1235">H_C_I</option>
-            <option value="CS-1236">OOD</option>
-          </select>
-        </mat-form-field>
+    <br>-->
+    <form [formGroup]="createForm">
+
+      <div class="row">
+        <div class="col-md-5 col-sm-12">
+          <mat-form-field class="w-100" appearance="fill">
+            <mat-label>Semester No</mat-label>
+            <select [(ngModel)]="selectedTerm" (ngModelChange)="onTermChange()" matNativeControl required formControlName="term">
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+              <option>5</option>
+              <option>6</option>
+              <option>7</option>
+              <option>8</option>
+              <option>0</option>
+            </select>
+          </mat-form-field>
+        </div>
       </div>
-    </div>
-    <div class="row">
-      <div class="col-md-5 col-sm-12">
-        <mat-form-field class="w-100" appearance="fill">
-          <mat-label>Section</mat-label>
-          <select matNativeControl required>
-            <option value="A">A</option>
-            <option value="B">B</option>
-            <option value="C">C</option>
-          </select>
-        </mat-form-field>
+      <div class="row">
+        <div class="col-md-5 col-sm-12">
+          <mat-form-field class="w-100" appearance="fill">
+            <mat-label>Teacher</mat-label>
+            <select matNativeControl required formControlName="teacher">
+              <option [value]="teacher.NM" *ngFor="let teacher of teachers">{{teacher.NM}}</option>
+            </select>
+          </mat-form-field>
+        </div>
       </div>
-    </div>
-    <div class="row">
-      <div class="col-md-5 col-sm-12">
-        <mat-form-field class="w-100" appearance="fill">
-          <mat-label>Start Time</mat-label>
-          <select matNativeControl required>
-            <option value="9:00">9:00</option>
-            <option value="11:00">11:00</option>
-            <option value="1:00">1:00</option>
-          </select>
-        </mat-form-field>
+      <div class="row">
+        <div class="col-md-5 col-sm-12">
+          <mat-form-field class="w-100" appearance="fill">
+            <mat-label>Courses</mat-label>
+            <select matNativeControl required formControlName="course">
+              <option [value]="course.SUB_NM" *ngFor="let course of courses">{{course.SUB_NM}}</option>
+            </select>
+          </mat-form-field>
+        </div>
       </div>
-    </div>
-    <div class="row">
-      <div class="col-md-5 col-sm-12">
-        <mat-form-field class="w-100" appearance="fill">
-          <mat-label>Room</mat-label>
-          <select matNativeControl required>
-            <option value="123">Room-1</option>
-            <option value="123">Room-2</option>
-          </select>
-        </mat-form-field>
+      <div class="row">
+        <div class="col-md-5 col-sm-12">
+          <mat-form-field class="w-100" appearance="fill">
+            <mat-label>Section</mat-label>
+            <select matNativeControl required formControlName="section">
+              <option [value]="section.SECTION" *ngFor="let section of sections">{{section.SECTION}}</option>
+            </select>
+          </mat-form-field>
+        </div>
       </div>
-    </div>
+      <div class="row">
+        <div class="col-md-5 col-sm-12">
+          <mat-form-field class="w-100" appearance="fill">
+            <mat-label>Start Time</mat-label>
+            <select matNativeControl required formControlName="st_time">
+              <option value="9:00">08:00:00</option>
+              <option value="9:00">09:30:00</option>
+              <option value="9:00">11:00:00</option>
+              <option value="9:00">12:30:00</option>
+              <option value="9:00">02:00:00</option>
+              <option value="9:00">04:00:00</option>
+              <option value="9:00">05:30:00</option>
+              <option value="9:00">07:00:00</option>
+            </select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-5 col-sm-12">
+          <mat-form-field class="w-100" appearance="fill">
+            <mat-label>Room</mat-label>
+            <select matNativeControl required formControlName="room">
+              <option [value]="room.R_NM" *ngFor="let room of rooms">{{room.R_NM}}</option>
+            </select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-5 col-sm-12">
+          <mat-form-field class="w-100" appearance="fill">
+            <mat-label>Day</mat-label>
+            <select matNativeControl required formControlName="day">
+              <option>MONDAY</option>
+              <option>TUESDAY</option>
+              <option>WEDNESDAY</option>
+              <option>THURSDAY</option>
+              <option>FRIDAY</option>
+            </select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-5 col-sm-12">
+          <mat-form-field class="w-100" appearance="fill">
+            <mat-label>Morning/Evening</mat-label>
+            <select matNativeControl required formControlName="mrev">
+              <option value="M">Morning</option>
+              <option value="E">Evening</option>
+            </select>
+          </mat-form-field>
+        </div>
+      </div>
+    </form>
 
   </mat-card-content>
 
